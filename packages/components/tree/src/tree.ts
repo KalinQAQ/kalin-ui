@@ -5,12 +5,15 @@ type Key = string | number
 export interface TreeNode extends Required<TreeOption> {
   level: number
   rawNode: TreeOption
+  children: TreeNode[]
+  isLeaf: boolean
 }
 
 export interface TreeOption {
   label?: Key
   key?: Key
   children?: TreeOption[]
+  isLeaf: boolean
   [key: string]: unknown // 任意的接口 unknown，即任意类型
 }
 // vue组件的props
@@ -18,6 +21,10 @@ export const treeProps = {
   // as const 是一种 TypeScript 语言的语法，在这里它是用来告诉编译器将定义的对象的属性设为只读，确保对象在运行过程中不会被错误地写入其他值。
   data: {
     type: Array as PropType<TreeOption[]>,
+    default: () => []
+  },
+  defaultExpandedKeys: {
+    type: Array as PropType<Key[]>,
     default: () => []
   },
   laelField: {
