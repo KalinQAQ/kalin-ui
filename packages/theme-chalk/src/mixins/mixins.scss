@@ -1,0 +1,44 @@
+@use 'config' as *;
+@forward 'config';
+
+// .k-button{}
+@mixin b($block) {
+  $B: $namespace + '-' + $block;
+
+  .#{$B} {
+    @content;
+  }
+}
+
+// .k-button.is-desiabled
+@mixin when($state) {
+  @at-root {
+    &.#{$state-prefix + $state} {
+      @content;
+    }
+  }
+}
+
+// &--primary => .k-button--primary
+@mixin m($modifier) {
+  @at-root {
+    #{& + $modifier-separator + $modifier} {
+      @content;
+    }
+  }
+}
+
+// &__header  => .k-button__header
+@mixin e($element) {
+  @at-root {
+    #{& + $element-separator + $element} {
+      @content;
+    }
+  }
+}
+
+@mixin button-variant($color, $background-color, $border-color) {
+  color: $color;
+  background: $background-color;
+  border-color: $border-color;
+}
