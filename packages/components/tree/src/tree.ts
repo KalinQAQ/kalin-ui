@@ -41,6 +41,17 @@ export const treeProps = {
   }
 } as const
 
+export const treeNodeProps = {
+  node: {
+    type: Object as PropType<TreeNode>,
+    required: true
+  },
+  expanded: {
+    type: Boolean,
+    required: true
+  }
+}
+
 /*
  ** Partial、ExtractPropTypes为typescript中的类型辅助器
  ** Partial 类型辅助器能够将对象的所有属性变成可选

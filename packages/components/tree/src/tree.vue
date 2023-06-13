@@ -1,11 +1,25 @@
-<template>tree</template>
+<template>
+  <div :class="bem.b()">
+    <!-- 模板有自带的优化，如果自定义比较强的我们采用 tsx来编写 -->
+    <k-tree-node
+      v-for="node in flattenTree"
+      :key="node.key"
+      :node="node"
+      :expanded="isExpanded(node)"
+    >
+    </k-tree-node>
+  </div>
+</template>
 
 <script setup lang="ts">
 import { createNamespace } from '@kalin-ui/utils/create'
 import { TreeNode, TreeOption, treeProps } from './tree'
 import { ref, watch, computed } from 'vue'
+import KTreeNode from './treeNode.vue'
+
 defineOptions({ name: 'k-tree' })
 
+const bem = createNamespace('tree')
 const props = defineProps(treeProps)
 
 // 有了props 要对用户的数据进行格式化，格式化一个固定的结果
@@ -102,4 +116,8 @@ const flattenTree = computed(() => {
   }
   return flattenNodes
 })
+
+function isExpanded(node: TreeNode): boolean {
+  return expandedKeysSet.value.has(node.key)
+}
 </script>
