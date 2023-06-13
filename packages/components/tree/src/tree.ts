@@ -52,6 +52,10 @@ export const treeNodeProps = {
   }
 }
 
+export const treeNodeEmitts = {
+  toggle: (node: TreeNode) => node
+}
+
 /*
  ** Partial、ExtractPropTypes为typescript中的类型辅助器
  ** Partial 类型辅助器能够将对象的所有属性变成可选

@@ -6,6 +6,7 @@
       :key="node.key"
       :node="node"
       :expanded="isExpanded(node)"
+      @toggle="toggleExpand(node)"
     >
     </k-tree-node>
   </div>
@@ -119,5 +120,25 @@ const flattenTree = computed(() => {
 
 function isExpanded(node: TreeNode): boolean {
   return expandedKeysSet.value.has(node.key)
+}
+
+// 折叠功能
+function collpase(node: TreeNode) {
+  expandedKeysSet.value.delete(node.key)
+}
+
+// 展开功能
+function expand(node: TreeNode) {
+  expandedKeysSet.value.add(node.key)
+}
+
+// 切换展开
+function toggleExpand(node: TreeNode) {
+  const expandKeys = expandedKeysSet.value
+  if (expandKeys.has(node.key)) {
+    collpase(node)
+  } else {
+    expand(node)
+  }
 }
 </script>

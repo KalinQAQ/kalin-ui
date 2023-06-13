@@ -37,7 +37,6 @@ const data = ref(createData())
     label-field="label"
     key-field="key"
     children-field="children"
-    :default-expanded-keys="['40', '41']"
   ></k-tree>
 </template>
 
