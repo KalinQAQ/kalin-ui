@@ -10,3 +10,5 @@ declare module 'vue' {
     KTree: typeof Tree
   }
 }
+
+export * from './src/tree'

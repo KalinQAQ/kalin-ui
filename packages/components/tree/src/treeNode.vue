@@ -13,7 +13,8 @@
         @click="handleExpand"
       >
         <k-icon size="25" color="pink">
-          <Switcher></Switcher>
+          <Switcher v-if="!isLoading"></Switcher>
+          <Loading v-else></Loading>
         </k-icon>
       </span>
       <span> {{ node?.label }} </span>
@@ -26,6 +27,8 @@ import Switcher from './icon/Switcher'
 import KIcon from '@kalin-ui/components/icon'
 import { createNamespace } from '@kalin-ui/utils/create'
 import { treeNodeEmitts, treeNodeProps } from './tree'
+import Loading from './icon/Loading'
+import { computed } from 'vue'
 
 const bem = createNamespace('tree-node')
 
@@ -35,4 +38,7 @@ const emit = defineEmits(treeNodeEmitts)
 function handleExpand() {
   emit('toggle', props.node)
 }
+const isLoading = computed(() => {
+  return props.loadingKeys?.has(props.node.key)
+})
 </script>

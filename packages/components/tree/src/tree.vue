@@ -6,6 +6,7 @@
       :key="node.key"
       :node="node"
       :expanded="isExpanded(node)"
+      :loading-keys="loadingKeysRef"
       @toggle="toggleExpand(node)"
     >
     </k-tree-node>
@@ -14,7 +15,7 @@
 
 <script setup lang="ts">
 import { createNamespace } from '@kalin-ui/utils/create'
-import { TreeNode, TreeOption, treeProps } from './tree'
+import { Key, TreeNode, TreeOption, treeProps } from './tree'
 import { ref, watch, computed } from 'vue'
 import KTreeNode from './treeNode.vue'
 
@@ -29,6 +30,7 @@ const props = defineProps(treeProps)
 // 我们将props.data 格式化后放到tree中
 const tree = ref<TreeNode[]>([])
 
+// 1）用来获取对应的字段
 function createOption(key: string, label: string, children: string) {
   return {
     getKey(node: TreeOption) {
@@ -48,7 +50,9 @@ const treeOptions = createOption(
   props.laelField,
   props.childrenField
 )
-function createTree(data: TreeOption[]): any {
+
+// 2）将用户传递的数据进行格式化操作
+function createTree(data: TreeOption[], parent: TreeNode | null = null): any {
   function traversal(data: TreeOption[], parent: TreeNode | null = null) {
     return data.map(node => {
       const children = treeOptions.getChildren(node) || []
@@ -70,7 +74,7 @@ function createTree(data: TreeOption[]): any {
     })
   }
 
-  const res: TreeNode[] = traversal(data)
+  const res: TreeNode[] = traversal(data, parent)
   return res
 }
 
@@ -127,15 +131,44 @@ function collpase(node: TreeNode) {
   expandedKeysSet.value.delete(node.key)
 }
 
+const loadingKeysRef = ref(new Set<Key>()) // 存储正在加载的key
+
+function triggerLoading(node: TreeNode) {
+  if (!node.children.length && !node.isLeaf) {
+    // 如果没有加载过这个就饿点，就加载这个节点
+    const loadingKeys = loadingKeysRef.value
+    if (!loadingKeys.has(node.key)) {
+      // 防⽌重复加载
+      loadingKeys.add(node.key) // 添加为正在加载
+      const { onLoad } = props // 有onLoad⽅法
+      if (onLoad) {
+        // 调用用户提供的加载方法
+        onLoad(node.rawNode).then((children: TreeOption[]) => {
+          // 修改原来的节点
+          node.rawNode.children = children
+          // 更新自定义的node
+          node.children = createTree(children, node) // 格式化后绑定
+          loadingKeys.delete(node.key) // 加载完毕移除key
+        })
+      }
+    }
+  }
+}
+
 // 展开功能
 function expand(node: TreeNode) {
   expandedKeysSet.value.add(node.key)
+
+  // 这里应该实现对应的加载逻辑
+  triggerLoading(node)
 }
 
 // 切换展开
+// 4）让用户点击展开
 function toggleExpand(node: TreeNode) {
   const expandKeys = expandedKeysSet.value
-  if (expandKeys.has(node.key)) {
+  // 如果当前这个节点正在加载中，不让收起
+  if (expandKeys.has(node.key) && !loadingKeysRef.value.has(node.key)) {
     collpase(node)
   } else {
     expand(node)

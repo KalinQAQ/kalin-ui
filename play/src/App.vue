@@ -1,27 +1,75 @@
 <script setup lang="ts">
+import { TreeOption } from '@kalin-ui/components/tree/src/tree'
 import { AddCircle } from '@vicons/ionicons5'
 import { ref } from 'vue'
 
-function createData(level = 4, parentKey = ''): any {
-  if (!level) return []
-  const arr = new Array(6 - level).fill(0)
-  return arr.map((_, idx: number) => {
-    const key = parentKey + level + idx
-    return {
-      label: createLabel(level), // 显示的内容
-      key, // 为了唯一性
-      children: createData(level - 1, key) // 孩子
+// function createData(level = 4, parentKey = ''): any {
+//   if (!level) return []
+//   const arr = new Array(6 - level).fill(0)
+//   return arr.map((_, idx: number) => {
+//     const key = parentKey + level + idx
+//     return {
+//       label: createLabel(level), // 显示的内容
+//       key, // 为了唯一性
+//       children: createData(level - 1, key) // 孩子
+//     }
+//   })
+// }
+
+// function createLabel(level: number): string {
+//   if (level === 4) return '道生一'
+//   if (level === 3) return '一生二'
+//   if (level === 2) return '二生三'
+//   if (level === 1) return '三生万物'
+//   return ''
+// }
+
+function createData() {
+  return [
+    {
+      label: nextLabel(),
+      key: 1,
+      isLeaf: false // 这里isLeaf 为false 表示点击的时候动态的加载子节点
+    },
+    {
+      label: nextLabel(),
+      key: 2,
+      isLeaf: false
     }
-  })
+  ]
 }
-function createLabel(level: number): string {
-  if (level === 4) return '道生一'
-  if (level === 3) return '一生二'
-  if (level === 2) return '二生三'
-  if (level === 1) return '三生万物'
+
+function nextLabel(currentLabel?: string | number): string {
+  if (!currentLabel) return 'Out of Tao, One is born'
+  if (currentLabel === 'Out of Tao, One is born') return 'Out of One, Two'
+  if (currentLabel === 'Out of One, Two') return 'Out of Two, Three'
+  if (currentLabel === 'Out of Two, Three') {
+    return 'Out of Three, the created universe'
+  }
+  if (currentLabel === 'Out of Three, thecreated universe') {
+    return 'Out of Tao, One is born'
+  }
   return ''
 }
+
 const data = ref(createData())
+
+const handleLoad = (node: TreeOption) => {
+  // 内部肯定需要将展开的节点传递给我
+  // 处理异步的两种方法: 1、回调函数 2、promise
+  return new Promise<TreeOption[]>((resolve, reject) => {
+    setTimeout(() => {
+      resolve([
+        // 这个数据回作为当前展开的node的children属性
+        {
+          label: nextLabel(node.label),
+          key: node.key + nextLabel(node.label),
+          isLeaf: false
+        }
+      ])
+    }, 1000)
+  })
+}
 </script>
 
 <template>
@@ -32,12 +80,7 @@ const data = ref(createData())
     <AddCircle></AddCircle>
   </k-icon>
   <!-- 在使用树组件的时候，会传递一个树型的结构 -->
-  <k-tree
-    :data="data"
-    label-field="label"
-    key-field="key"
-    children-field="children"
-  ></k-tree>
+  <k-tree :data="data" :on-load="handleLoad"> </k-tree>
 </template>
 
 <style scoped></style>
