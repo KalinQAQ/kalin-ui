@@ -39,7 +39,18 @@ export const treeProps = {
     type: String,
     default: 'children'
   },
-  onLoad: Function as PropType<(node: TreeOption) => Promise<TreeOption[]>>
+  onLoad: Function as PropType<(node: TreeOption) => Promise<TreeOption[]>>,
+  selectedKeys: {
+    type: Array as PropType<Key[]>
+  },
+  selectable: {
+    type: Boolean,
+    default: true
+  },
+  multiple: {
+    type: Boolean,
+    default: false
+  }
 } as const
 
 export const treeNodeProps = {
@@ -54,13 +65,22 @@ export const treeNodeProps = {
   loadingKeys: {
     type: Object as PropType<Set<Key>>,
     required: true
+  },
+  selectedKeys: {
+    type: Array as PropType<Key[]>,
+    default: []
   }
 }
 
 export const treeNodeEmitts = {
-  toggle: (node: TreeNode) => node
+  toggle: (node: TreeNode) => node,
+  select: (node: TreeNode) => node
 }
 
+export const treeEmitts = {
+  // 内部发射的事件，用来同步响应式数据
+  'update:selectedKeys': (keys: Key[]) => keys
+}
 /*
  ** Partial、ExtractPropTypes为typescript中的类型辅助器
  ** Partial 类型辅助器能够将对象的所有属性变成可选

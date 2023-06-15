@@ -1,43 +1,43 @@
 <script setup lang="ts">
-import { TreeOption } from '@kalin-ui/components/tree/src/tree'
+import { Key, TreeOption } from '@kalin-ui/components/tree/src/tree'
 import { AddCircle } from '@vicons/ionicons5'
 import { ref } from 'vue'
 
-// function createData(level = 4, parentKey = ''): any {
-//   if (!level) return []
-//   const arr = new Array(6 - level).fill(0)
-//   return arr.map((_, idx: number) => {
-//     const key = parentKey + level + idx
-//     return {
-//       label: createLabel(level), // 显示的内容
-//       key, // 为了唯一性
-//       children: createData(level - 1, key) // 孩子
-//     }
-//   })
-// }
-
-// function createLabel(level: number): string {
-//   if (level === 4) return '道生一'
-//   if (level === 3) return '一生二'
-//   if (level === 2) return '二生三'
-//   if (level === 1) return '三生万物'
-//   return ''
-// }
-
-function createData() {
-  return [
-    {
-      label: nextLabel(),
-      key: 1,
-      isLeaf: false // 这里isLeaf 为false 表示点击的时候动态的加载子节点
-    },
-    {
-      label: nextLabel(),
-      key: 2,
-      isLeaf: false
+function createData(level = 4, parentKey = ''): any {
+  if (!level) return []
+  const arr = new Array(6 - level).fill(0)
+  return arr.map((_, idx: number) => {
+    const key = parentKey + level + idx
+    return {
+      label: createLabel(level), // 显示的内容
+      key, // 为了唯一性
+      children: createData(level - 1, key) // 孩子
     }
-  ]
+  })
 }
+
+function createLabel(level: number): string {
+  if (level === 4) return '道生一'
+  if (level === 3) return '一生二'
+  if (level === 2) return '二生三'
+  if (level === 1) return '三生万物'
+  return ''
+}
+
+// function createData() {
+//   return [
+//     {
+//       label: nextLabel(),
+//       key: 1,
+//       isLeaf: false // 这里isLeaf 为false 表示点击的时候动态的加载子节点
+//     },
+//     {
+//       label: nextLabel(),
+//       key: 2,
+//       isLeaf: false
+//     }
+//   ]
+// }
 
 function nextLabel(currentLabel?: string | number): string {
   if (!currentLabel) return 'Out of Tao, One is born'
@@ -70,6 +70,8 @@ const handleLoad = (node: TreeOption) => {
     }, 1000)
   })
 }
+
+const value = ref<Key[]>(['40', '41'])
 </script>
 
 <template>
@@ -80,7 +82,15 @@ const handleLoad = (node: TreeOption) => {
     <AddCircle></AddCircle>
   </k-icon>
   <!-- 在使用树组件的时候，会传递一个树型的结构 -->
-  <k-tree :data="data" :on-load="handleLoad"> </k-tree>
+  <k-tree
+    :data="data"
+    :on-load="handleLoad"
+    v-model:selected-keys="value"
+    selectable
+    multiple
+  >
+  </k-tree>
+  <!-- selectable意味着可以选择节点 multiple意味着可以多选节点 -->
 </template>
 
 <style scoped></style>

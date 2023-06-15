@@ -1,7 +1,7 @@
 <template>
-  <div :class="bem.b()">
+  <div :class="[bem.b(), bem.is('selected', isSelected)]">
     <div
-      :class="bem.e('content')"
+      :class="[bem.e('content')]"
       :style="{ paddingLeft: `${node!.level * 16}px` }"
     >
       <span
@@ -17,7 +17,9 @@
           <Loading v-else></Loading>
         </k-icon>
       </span>
-      <span> {{ node?.label }} </span>
+      <span @click="handleContentClick(node)" :class="bem.e('label')">
+        {{ node?.label }}
+      </span>
     </div>
   </div>
 </template>
@@ -26,7 +28,7 @@
 import Switcher from './icon/Switcher'
 import KIcon from '@kalin-ui/components/icon'
 import { createNamespace } from '@kalin-ui/utils/create'
-import { treeNodeEmitts, treeNodeProps } from './tree'
+import { TreeNode, treeNodeEmitts, treeNodeProps } from './tree'
 import Loading from './icon/Loading'
 import { computed } from 'vue'
 
@@ -39,6 +41,15 @@ function handleExpand() {
   emit('toggle', props.node)
 }
 const isLoading = computed(() => {
-  return props.loadingKeys?.has(props.node.key)
+  return props.loadingKeys?.has(props.node!.key)
 })
+
+const isSelected = computed(() => {
+  return props.selectedKeys.includes(props.node!.key)
+})
+
+const handleContentClick = (node: TreeNode) => {
+  //内容点击触发选择
+  emit('select', node)
+}
 </script>

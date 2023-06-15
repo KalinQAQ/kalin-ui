@@ -10,6 +10,8 @@
   font-size: 16px;
 
   @include e('label') {
+    cursor: pointer;
+    flex: 1;
   }
   &:not(.is-disabled) {
     .z-tree-node__label {
@@ -44,7 +46,7 @@
     }
   }
   @include when(selected) {
-    background-color: aqua;
+    background-color: #e7f5ee;
   }
   @include e('content') {
     display: flex;

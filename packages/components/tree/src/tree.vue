@@ -7,6 +7,8 @@
       :node="node"
       :expanded="isExpanded(node)"
       :loading-keys="loadingKeysRef"
+      :selected-keys="selectedKeysRef"
+      @select="handleSelect"
       @toggle="toggleExpand(node)"
     >
     </k-tree-node>
@@ -15,7 +17,7 @@
 
 <script setup lang="ts">
 import { createNamespace } from '@kalin-ui/utils/create'
-import { Key, TreeNode, TreeOption, treeProps } from './tree'
+import { Key, TreeNode, TreeOption, treeEmitts, treeProps } from './tree'
 import { ref, watch, computed } from 'vue'
 import KTreeNode from './treeNode.vue'
 
@@ -173,5 +175,47 @@ function toggleExpand(node: TreeNode) {
   } else {
     expand(node)
   }
+}
+
+// 5）实现选中节点
+const emit = defineEmits(treeEmitts)
+
+const selectedKeysRef = ref<Key[]>([]) // 选中的key列表
+
+watch(
+  () => props.selectedKeys, // 监控selectedKeys
+  value => {
+    if (value) {
+      selectedKeysRef.value = value
+      console.log(selectedKeysRef.value)
+    }
+  },
+  {
+    immediate: true
+  }
+)
+// 处理选中的节点
+function handleSelect(node: TreeNode) {
+  let keys = Array.from(selectedKeysRef.value)
+
+  if (!props.selectable) return // 如果不能选择什么都不用做了
+
+  if (props.multiple) {
+    // 支持多选
+    const index = keys.findIndex(key => key === node.key)
+    if (index > -1) {
+      keys.splice(index, 1)
+    } else {
+      keys.push(node.key)
+    }
+  } else {
+    if (keys.includes(node.key)) {
+      // 如果选中的包含则清空
+      keys = []
+    } else {
+      keys = [node.key]
+    }
+  }
+  emit('update:selectedKeys', keys)
 }
 </script>
