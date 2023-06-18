@@ -1,17 +1,21 @@
 <template>
   <div :class="bem.b()">
     <!-- 模板有自带的优化，如果自定义比较强的我们采用 tsx来编写 -->
-    <k-tree-node
-      v-for="node in flattenTree"
-      :key="node.key"
-      :node="node"
-      :expanded="isExpanded(node)"
-      :loading-keys="loadingKeysRef"
-      :selected-keys="selectedKeysRef"
-      @select="handleSelect"
-      @toggle="toggleExpand(node)"
-    >
-    </k-tree-node>
+    <k-virtual-list :items="flattenTree" :remain="8" :size="35">
+      <template #default="{ node }">
+        <k-tree-node
+          :key="node.key"
+          :node="node"
+          :expanded="isExpanded(node)"
+          :loading-keys="loadingKeysRef"
+          :selected-keys="selectedKeysRef"
+          :disabled="isDisabled(node)"
+          @select="handleSelect"
+          @toggle="toggleExpand(node)"
+        >
+        </k-tree-node>
+      </template>
+    </k-virtual-list>
   </div>
 </template>
 
@@ -27,6 +31,7 @@ import {
 } from './tree'
 import { ref, watch, computed, provide } from 'vue'
 import KTreeNode from './treeNode.vue'
+import KVirtualList from '@kalin-ui/components/virtual-list/src/virtual'
 import { useSlots } from 'vue'
 
 defineOptions({ name: 'k-tree' })
@@ -226,6 +231,10 @@ function handleSelect(node: TreeNode) {
     }
   }
   emit('update:selectedKeys', keys)
+}
+
+function isDisabled(node: TreeNode) {
+  return !!node.disabled
 }
 
 provide(treeInjectKey, {
