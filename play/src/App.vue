@@ -5,7 +5,7 @@ import { ref } from 'vue'
 
 function createData(level = 4, parentKey = ''): any {
   if (!level) return []
-  const arr = new Array(6 - level).fill(0)
+  const arr = new Array(20 - level).fill(0)
   return arr.map((_, idx: number) => {
     const key = parentKey + level + idx
     return {
@@ -53,6 +53,33 @@ function nextLabel(currentLabel?: string | number): string {
 }
 
 const data = ref(createData())
+// const data = ref<TreeOption[]>([
+//   {
+//     key: '0',
+//     label: '0',
+//     children: [
+//       {
+//         key: '0-0',
+//         label: '0-0'
+//       },
+//       {
+//         disabled: true, // 这个节点被禁用了
+//         key: '0-1',
+//         label: '0-1',
+//         children: [
+//           {
+//             label: '0-1-0',
+//             key: '0-1-0'
+//           },
+//           {
+//             label: '0-1-1',
+//             key: '0-1-1'
+//           }
+//         ]
+//       }
+//     ]
+//   }
+// ])
 
 const handleLoad = (node: TreeOption) => {
   // 内部肯定需要将展开的节点传递给我
@@ -71,7 +98,7 @@ const handleLoad = (node: TreeOption) => {
   })
 }
 
-const value = ref<Key[]>(['40', '41'])
+const value = ref<Key[]>([])
 </script>
 
 <template>
@@ -87,8 +114,8 @@ const value = ref<Key[]>(['40', '41'])
     :on-load="handleLoad"
     v-model:selected-keys="value"
     selectable
-    multiple
   >
+    <template #default="{ node }"> {{ node.key }} - {{ node.label }} </template>
   </k-tree>
   <!-- selectable意味着可以选择节点 multiple意味着可以多选节点 -->
 </template>

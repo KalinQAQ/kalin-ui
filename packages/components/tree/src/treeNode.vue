@@ -1,5 +1,11 @@
 <template>
-  <div :class="[bem.b(), bem.is('selected', isSelected)]">
+  <div
+    :class="[
+      bem.b(),
+      bem.is('selected', isSelected),
+      bem.is('disabled', node!.disabled)
+    ]"
+  >
     <div
       :class="[bem.e('content')]"
       :style="{ paddingLeft: `${node!.level * 16}px` }"
@@ -18,7 +24,7 @@
         </k-icon>
       </span>
       <span @click="handleContentClick(node)" :class="bem.e('label')">
-        {{ node?.label }}
+        <KTreeNodeContent :node="node"></KTreeNodeContent>
       </span>
     </div>
   </div>
@@ -28,17 +34,18 @@
 import Switcher from './icon/Switcher'
 import KIcon from '@kalin-ui/components/icon'
 import { createNamespace } from '@kalin-ui/utils/create'
-import { TreeNode, treeNodeEmitts, treeNodeProps } from './tree'
+import { TreeNode, treeInjectKey, treeNodeEmitts, treeNodeProps } from './tree'
 import Loading from './icon/Loading'
-import { computed } from 'vue'
+import KTreeNodeContent from './tree-node-content'
+import { computed, inject } from 'vue'
 
 const bem = createNamespace('tree-node')
 
 const props = defineProps(treeNodeProps)
-const emit = defineEmits(treeNodeEmitts)
 
+const emit = defineEmits(treeNodeEmitts)
 function handleExpand() {
-  emit('toggle', props.node)
+  emit('toggle', props.node!)
 }
 const isLoading = computed(() => {
   return props.loadingKeys?.has(props.node!.key)
@@ -50,6 +57,9 @@ const isSelected = computed(() => {
 
 const handleContentClick = (node: TreeNode) => {
   //内容点击触发选择
+  if (node?.disabled) return
   emit('select', node)
 }
+
+const treeContext = inject(treeInjectKey)
 </script>

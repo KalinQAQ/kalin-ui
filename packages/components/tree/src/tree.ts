@@ -1,4 +1,10 @@
-import { ExtractPropTypes, PropType } from 'vue'
+import {
+  ExtractPropTypes,
+  InjectionKey,
+  PropType,
+  SetupContext,
+  provide
+} from 'vue'
 
 export type Key = string | number
 
@@ -13,7 +19,8 @@ export interface TreeOption {
   label?: Key
   key?: Key
   children?: TreeOption[]
-  isLeaf: boolean
+  isLeaf?: boolean
+  disabled?: boolean
   [key: string]: unknown // 任意的接口 unknown，即任意类型
 }
 // vue组件的props
@@ -87,3 +94,17 @@ export const treeEmitts = {
  ** ExtractPropTypes 类型辅助器能够从 Vue.js 组件的 props 中提取属性的类型定义。在这里，我们使用ExtractPropTypes 辅助器从 treeProps 对象中提取 props 的类型 definition。
  */
 export type TreeProps = Partial<ExtractPropTypes<typeof treeProps>>
+
+export interface TreeContext {
+  slots: SetupContext['slots']
+  // emit: SetupContext<typeof treeEmitts>['emit']
+}
+
+// 此变量作为提供出去的属性
+export const treeInjectKey: InjectionKey<TreeContext> = Symbol()
+export const treeNodeContentProps = {
+  node: {
+    type: Object as PropType<TreeNode>,
+    required: true
+  }
+}

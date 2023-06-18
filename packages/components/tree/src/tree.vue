@@ -17,9 +17,17 @@
 
 <script setup lang="ts">
 import { createNamespace } from '@kalin-ui/utils/create'
-import { Key, TreeNode, TreeOption, treeEmitts, treeProps } from './tree'
-import { ref, watch, computed } from 'vue'
+import {
+  Key,
+  TreeNode,
+  TreeOption,
+  treeEmitts,
+  treeInjectKey,
+  treeProps
+} from './tree'
+import { ref, watch, computed, provide } from 'vue'
 import KTreeNode from './treeNode.vue'
+import { useSlots } from 'vue'
 
 defineOptions({ name: 'k-tree' })
 
@@ -64,6 +72,7 @@ function createTree(data: TreeOption[], parent: TreeNode | null = null): any {
         children: [], // 默认为空
         rawNode: node,
         level: parent ? parent.level + 1 : 0,
+        disabled: !!node.disabled,
         // 判断节点是否自带isLeaf 如果自带了 以自带的为准，否则看一下是否有children属性
         // 对 || 的增强
         isLeaf: node.isLeaf ?? children.length == 0
@@ -218,4 +227,8 @@ function handleSelect(node: TreeNode) {
   }
   emit('update:selectedKeys', keys)
 }
+
+provide(treeInjectKey, {
+  slots: useSlots()
+})
 </script>

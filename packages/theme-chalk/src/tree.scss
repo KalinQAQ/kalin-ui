@@ -14,14 +14,14 @@
     flex: 1;
   }
   &:not(.is-disabled) {
-    .z-tree-node__label {
+    .k-tree-node__label {
       cursor: pointer;
       display: flex;
       flex: 1;
     }
   }
   &.is-disabled {
-    .z-tree-node__label {
+    .k-tree-node__label {
       cursor: not-allowed;
       display: flex;
       flex: 1;
