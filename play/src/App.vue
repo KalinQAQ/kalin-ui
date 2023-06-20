@@ -99,6 +99,12 @@ const handleLoad = (node: TreeOption) => {
 }
 
 const value = ref<Key[]>([])
+
+const check = ref(true)
+
+const handleChange = (val: boolean) => {
+  console.log(val)
+}
 </script>
 
 <template>
@@ -110,14 +116,25 @@ const value = ref<Key[]>([])
   </k-icon>
   <!-- 在使用树组件的时候，会传递一个树型的结构 -->
   <k-tree
+    v-model:selected-keys="value"
     :data="data"
     :on-load="handleLoad"
-    v-model:selected-keys="value"
     selectable
+    show-checkbox
   >
     <template #default="{ node }"> {{ node.key }} - {{ node.label }} </template>
   </k-tree>
   <!-- selectable意味着可以选择节点 multiple意味着可以多选节点 -->
+
+  {{ check }}
+  <k-checkbox
+    v-model="check"
+    :disabled="false"
+    :indeterminate="true"
+    label="节点"
+    @change="handleChange"
+  >
+  </k-checkbox>
 </template>
 
 <style scoped></style>
