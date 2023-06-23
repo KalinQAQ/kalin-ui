@@ -52,39 +52,39 @@ function nextLabel(currentLabel?: string | number): string {
   return ''
 }
 
-const data = ref(createData())
-// const data = ref<TreeOption[]>([
-//   {
-//     key: '0',
-//     label: '0',
-//     children: [
-//       {
-//         key: '0-0',
-//         label: '0-0'
-//       },
-//       {
-//         disabled: true, // 这个节点被禁用了
-//         key: '0-1',
-//         label: '0-1',
-//         children: [
-//           {
-//             label: '0-1-0',
-//             key: '0-1-0'
-//           },
-//           {
-//             label: '0-1-1',
-//             key: '0-1-1'
-//           }
-//         ]
-//       }
-//     ]
-//   }
-// ])
+// const data = ref(createData())
+const data = ref<TreeOption[]>([
+  {
+    key: '0',
+    label: '0',
+    children: [
+      {
+        key: '0-0',
+        label: '0-0'
+      },
+      {
+        disabled: true, // 这个节点被禁用了
+        key: '0-1',
+        label: '0-1',
+        children: [
+          {
+            label: '0-1-0',
+            key: '0-1-0'
+          },
+          {
+            label: '0-1-1',
+            key: '0-1-1'
+          }
+        ]
+      }
+    ]
+  }
+])
 
 const handleLoad = (node: TreeOption) => {
   // 内部肯定需要将展开的节点传递给我
   // 处理异步的两种方法: 1、回调函数 2、promise
-  return new Promise<TreeOption[]>((resolve, reject) => {
+  return new Promise<TreeOption[]>(resolve => {
     setTimeout(() => {
       resolve([
         // 这个数据回作为当前展开的node的children属性
@@ -115,18 +115,21 @@ const handleChange = (val: boolean) => {
     <AddCircle></AddCircle>
   </k-icon>
   <!-- 在使用树组件的时候，会传递一个树型的结构 -->
+
+  {{ value }}
   <k-tree
     v-model:selected-keys="value"
     :data="data"
     :on-load="handleLoad"
     selectable
     show-checkbox
+    :default-checked-keys="['40', '41']"
   >
     <template #default="{ node }"> {{ node.key }} - {{ node.label }} </template>
   </k-tree>
   <!-- selectable意味着可以选择节点 multiple意味着可以多选节点 -->
 
-  {{ check }}
+  <!-- {{ check }}
   <k-checkbox
     v-model="check"
     :disabled="false"
@@ -134,7 +137,7 @@ const handleChange = (val: boolean) => {
     label="节点"
     @change="handleChange"
   >
-  </k-checkbox>
+  </k-checkbox> -->
 </template>
 
 <style scoped></style>

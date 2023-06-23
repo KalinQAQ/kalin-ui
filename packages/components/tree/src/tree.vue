@@ -12,6 +12,9 @@
           :disabled="isDisabled(node)"
           @select="handleSelect"
           @toggle="toggleExpand(node)"
+          :show-checkbox="showCheckbox"
+          :checked="isChecked(node)"
+          :indeterminate="isIndeterminate(node)"
         >
         </k-tree-node>
       </template>
@@ -233,11 +236,23 @@ function handleSelect(node: TreeNode) {
   emit('update:selectedKeys', keys)
 }
 
+provide(treeInjectKey, {
+  slots: useSlots()
+})
+
+const checkedKeysRefs = ref(new Set(props.defaultCheckedKeys))
+
+function isChecked(node: TreeNode) {
+  return checkedKeysRefs.value.has(node.key)
+}
+
 function isDisabled(node: TreeNode) {
   return !!node.disabled
 }
 
-provide(treeInjectKey, {
-  slots: useSlots()
-})
+const indeterminateKeysRefs = ref<Set<Key>>(new Set())
+
+function isIndeterminate(node: TreeNode) {
+  return true
+}
 </script>

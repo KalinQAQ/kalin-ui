@@ -23,7 +23,14 @@
           <Loading v-else></Loading>
         </k-icon>
       </span>
-      <span @click="handleContentClick(node)" :class="bem.e('label')">
+
+      <k-checkbox
+        v-if="showCheckbox"
+        :disabled="disabled"
+        :model-value="checked"
+        :indeterminate="indeterminate"
+      ></k-checkbox>
+      <span :class="bem.e('label')" @click="handleContentClick(node!)">
         <KTreeNodeContent :node="node"></KTreeNodeContent>
       </span>
     </div>
@@ -37,6 +44,7 @@ import { createNamespace } from '@kalin-ui/utils/create'
 import { TreeNode, treeInjectKey, treeNodeEmitts, treeNodeProps } from './tree'
 import Loading from './icon/Loading'
 import KTreeNodeContent from './tree-node-content'
+import KCheckbox from '@kalin-ui/components/checkbox'
 import { computed, inject } from 'vue'
 
 const bem = createNamespace('tree-node')

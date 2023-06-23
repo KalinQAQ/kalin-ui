@@ -87,7 +87,7 @@ export const treeNodeProps = {
   },
   showCheckbox: {
     type: Boolean,
-    required: true
+    required: false
   },
   checked: Boolean,
   disabled: Boolean,
