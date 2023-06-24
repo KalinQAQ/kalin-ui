@@ -29,6 +29,7 @@
         :disabled="disabled"
         :model-value="checked"
         :indeterminate="indeterminate"
+        @change="handleCheckChange"
       ></k-checkbox>
       <span :class="bem.e('label')" @click="handleContentClick(node!)">
         <KTreeNodeContent :node="node"></KTreeNodeContent>
@@ -67,6 +68,10 @@ const handleContentClick = (node: TreeNode) => {
   //内容点击触发选择
   if (node?.disabled) return
   emit('select', node)
+}
+
+function handleCheckChange(val: boolean) {
+  emit('check', props.node!, val)
 }
 
 const treeContext = inject(treeInjectKey)

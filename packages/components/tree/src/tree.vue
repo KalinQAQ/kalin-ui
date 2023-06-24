@@ -10,11 +10,12 @@
           :loading-keys="loadingKeysRef"
           :selected-keys="selectedKeysRef"
           :disabled="isDisabled(node)"
-          @select="handleSelect"
-          @toggle="toggleExpand(node)"
           :show-checkbox="showCheckbox"
           :checked="isChecked(node)"
           :indeterminate="isIndeterminate(node)"
+          @select="handleSelect"
+          @toggle="toggleExpand(node)"
+          @check="toggleCheck"
         >
         </k-tree-node>
       </template>
@@ -32,7 +33,7 @@ import {
   treeInjectKey,
   treeProps
 } from './tree'
-import { ref, watch, computed, provide } from 'vue'
+import { ref, watch, computed, provide, onMounted } from 'vue'
 import KTreeNode from './treeNode.vue'
 import KVirtualList from '@kalin-ui/components/virtual-list/src/virtual'
 import { useSlots } from 'vue'
@@ -83,7 +84,8 @@ function createTree(data: TreeOption[], parent: TreeNode | null = null): any {
         disabled: !!node.disabled,
         // 判断节点是否自带isLeaf 如果自带了 以自带的为准，否则看一下是否有children属性
         // 对 || 的增强
-        isLeaf: node.isLeaf ?? children.length == 0
+        isLeaf: node.isLeaf ?? children.length == 0,
+        parentKey: parent?.key
       }
       if (children.length > 0) {
         // 有孩子再去递归孩子，将其格式化成treeNode类型
@@ -253,6 +255,73 @@ function isDisabled(node: TreeNode) {
 const indeterminateKeysRefs = ref<Set<Key>>(new Set())
 
 function isIndeterminate(node: TreeNode) {
-  return true
+  return indeterminateKeysRefs.value.has(node.key)
 }
+
+// 自上而下的选中
+function toggle(node: TreeNode, checked: boolean) {
+  if (!node) return
+  const checkedKeys = checkedKeysRefs.value
+
+  if (checked) {
+    // 选中的时候 去掉半选状态
+    indeterminateKeysRefs.value.delete(node.key)
+  }
+  // 维护当前的key列表
+  checkedKeys[checked ? 'add' : 'delete'](node.key)
+  const children = node.children
+  if (children) {
+    children.forEach(childNode => {
+      if (!childNode.disabled) {
+        toggle(childNode, checked)
+      }
+    })
+  }
+}
+
+function findNode(key: Key) {
+  return flattenTree.value.find(node => node.key === key)
+}
+function updateCheckedKeys(node: TreeNode) {
+  // 自下而上的更新
+  if (node.parentKey) {
+    const parentNode = findNode(node.parentKey)
+
+    if (parentNode) {
+      let allChecked = true //默认儿子应该全选
+      let hasChecked = false // 儿子有没有被选中
+
+      const nodes = parentNode.children
+      for (const node of nodes) {
+        if (checkedKeysRefs.value.has(node.key)) {
+          hasChecked = true // 子节点被选中了
+        } else if (indeterminateKeysRefs.value.has(node.key)) {
+          allChecked = false
+          hasChecked = true
+        } else {
+          allChecked = false
+        }
+      }
+      if (allChecked) {
+        checkedKeysRefs.value.add(parentNode.key)
+        indeterminateKeysRefs.value.delete(parentNode.key)
+      } else if (hasChecked) {
+        checkedKeysRefs.value.delete(parentNode.key)
+        indeterminateKeysRefs.value.add(parentNode.key)
+      }
+      updateCheckedKeys(parentNode)
+    }
+  }
+}
+// 切换选中
+function toggleCheck(node: TreeNode, checked: boolean) {
+  toggle(node, checked)
+  updateCheckedKeys(node)
+}
+
+onMounted(() => {
+  checkedKeysRefs.value.forEach((key: Key) => {
+    toggle(findNode(key)!, true)
+  })
+})
 </script>
