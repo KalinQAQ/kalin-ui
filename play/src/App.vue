@@ -138,6 +138,21 @@ const handleChange = (val: boolean) => {
     @change="handleChange"
   >
   </k-checkbox> -->
+
+  <k-button
+    size="medium"
+    type="danger"
+    :round="true"
+    :loading="true"
+    :disabled="true"
+  >
+    按钮
+    <template #icon>
+      <k-icon>
+        <AddCircle></AddCircle>
+      </k-icon>
+    </template>
+  </k-button>
 </template>
 
 <style scoped></style>

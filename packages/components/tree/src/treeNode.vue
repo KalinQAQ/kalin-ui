@@ -39,11 +39,11 @@
 </template>
 
 <script setup lang="ts">
-import Switcher from './icon/Switcher'
+import Switcher from '@kalin-ui/components/internal-icon/Switcher'
 import KIcon from '@kalin-ui/components/icon'
 import { createNamespace } from '@kalin-ui/utils/create'
 import { TreeNode, treeInjectKey, treeNodeEmitts, treeNodeProps } from './tree'
-import Loading from './icon/Loading'
+import Loading from '@kalin-ui/components/internal-icon/Loading'
 import KTreeNodeContent from './tree-node-content'
 import KCheckbox from '@kalin-ui/components/checkbox'
 import { computed, inject } from 'vue'
@@ -76,3 +76,4 @@ function handleCheckChange(val: boolean) {
 
 const treeContext = inject(treeInjectKey)
 </script>
+../../internal-icon/Switcher
