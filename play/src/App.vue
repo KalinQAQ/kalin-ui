@@ -105,6 +105,10 @@ const check = ref(true)
 const handleChange = (val: boolean) => {
   console.log(val)
 }
+
+const handleClick = () => {
+  console.log('点击')
+}
 </script>
 
 <template>
@@ -143,8 +147,9 @@ const handleChange = (val: boolean) => {
     size="medium"
     type="danger"
     :round="true"
-    :loading="true"
-    :disabled="true"
+    icon-placement="right"
+    @click="handleClick"
+    @mousedown="handleClick"
   >
     按钮
     <template #icon>
