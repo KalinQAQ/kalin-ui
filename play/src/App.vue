@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Key, TreeOption } from '@kalin-ui/components/tree/src/tree'
 import { AddCircle } from '@vicons/ionicons5'
-import { ref } from 'vue'
+import { reactive, ref } from 'vue'
 
 function createData(level = 4, parentKey = ''): any {
   if (!level) return []
@@ -109,6 +109,17 @@ const handleChange = (val: boolean) => {
 const handleClick = () => {
   console.log('点击')
 }
+
+const username = ref('')
+const handleBlur = (e: any) => {
+  console.log(e)
+}
+
+const handleFocus = (e: any) => {
+  console.log(e)
+}
+
+const state = reactive({ username: '', password: '' })
 </script>
 
 <template>
@@ -158,6 +169,33 @@ const handleClick = () => {
       </k-icon>
     </template>
   </k-button>
+
+  <k-input
+    v-model="username"
+    placeholder="请输入密码"
+    show-password="true"
+    :clearable="true"
+    @blur="handleBlur"
+    @focus="handleFocus"
+  >
+    <template #prepend> prepend </template>
+    <template #prefixIcon>
+      <k-icon>
+        <AddCircle></AddCircle>
+      </k-icon>
+    </template>
+    <template #sufixIcon>
+      <k-icon>
+        <AddCircle></AddCircle>
+      </k-icon>
+    </template>
+    <template #append> append </template>
+  </k-input>
+
+  <k-form-item prop="username">
+    <k-input placeholder="请输入用户名" v-model="state.username" />
+    <template #label> 用户名 </template>
+  </k-form-item>
 </template>
 
 <style scoped></style>

@@ -14,6 +14,7 @@
     "@kalin-ui/components": "workspace:*",
     "@kalin-ui/theme-chalk": "workspace:*",
     "@kalin-ui/utils": "workspace:*",
+    "async-validator": "^4.2.5",
     "typescript": "^5.1.3",
     "vue": "^3.3.4"
   },

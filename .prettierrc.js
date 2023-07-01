@@ -1,7 +1,20 @@
 module.exports = {
-  singleQuote: true, //使用单引号
-  semi: false, // 使用分号
-  trailingComma: 'none', // 末尾逗号
-  arrowParens: 'avoid', //  箭头函数括号
-  endOfLine: 'auto' // 结尾换行自动
+  printWidth: 80,
+  tabWidth: 2,
+  useTabs: false,
+  semi: false, // 未尾分号, default:  true
+  singleQuote: true, // 单引号 default: false
+  // quoteProps: 'as-needed',
+  // jsxSingleQuote: false,
+  trailingComma: 'none', // 未尾分号 default: es5    all | none | es5
+  // bracketSpacing: true,
+  // bracketSameLine: false,
+  // jsxBracketSameLine: false,
+  arrowParens: 'avoid', // default: always
+  // insertPragma: false,
+  // requirePragma: false,
+  proseWrap: 'never',
+  // htmlWhitespaceSensitivity: 'css',
+  // vueIndentScriptAndStyle: false,  // .vue 缩进
+  endOfLine: 'auto' // default lf
 }
