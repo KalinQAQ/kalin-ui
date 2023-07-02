@@ -2,6 +2,7 @@
 import { Key, TreeOption } from '@kalin-ui/components/tree/src/tree'
 import { AddCircle } from '@vicons/ionicons5'
 import { reactive, ref } from 'vue'
+import { FormInstance } from '@kalin-ui/components/form'
 
 function createData(level = 4, parentKey = ''): any {
   if (!level) return []
@@ -110,7 +111,6 @@ const handleClick = () => {
   console.log('点击')
 }
 
-const username = ref('')
 const handleBlur = (e: any) => {
   console.log(e)
 }
@@ -120,6 +120,15 @@ const handleFocus = (e: any) => {
 }
 
 const state = reactive({ username: '', password: '' })
+
+const formRef = ref<FormInstance>()
+
+const validateForm = () => {
+  const form = formRef.value
+  form?.validate((valid, errors) => {
+    console.log(valid, errors)
+  })
+}
 </script>
 
 <template>
@@ -170,7 +179,7 @@ const state = reactive({ username: '', password: '' })
     </template>
   </k-button>
 
-  <k-input
+  <!-- <k-input
     v-model="username"
     placeholder="请输入密码"
     show-password="true"
@@ -190,23 +199,50 @@ const state = reactive({ username: '', password: '' })
       </k-icon>
     </template>
     <template #append> append </template>
-  </k-input>
+  </k-input> -->
 
-  <k-form-item
-    prop="username"
-    :rules="[
-      { required: true, message: '请输入用户名', trigger: 'blur' },
-      {
+  <k-form
+    ref="formRef"
+    :model="state"
+    :rules="{
+      username: {
         min: 6,
         max: 10,
-        message: '用户名6-18位',
+        message: '用户名6-10位',
         trigger: ['change', 'blur']
       }
-    ]"
+    }"
   >
-    <k-input placeholder="请输入用户名" v-model="state.username" />
-    <template #label> 用户名 </template>
-  </k-form-item>
+    <k-form-item
+      prop="username"
+      :rules="[{ required: true, message: '请输入用户名', trigger: 'blur' }]"
+    >
+      <k-input v-model="state.username" placeholder="请输入用户名" />
+      <template #label> 用户名 </template>
+    </k-form-item>
+
+    <k-form-item
+      prop="password"
+      :rules="[{ required: true, message: '请输入密码', trigger: 'blur' }]"
+    >
+      <k-input
+        v-model="state.password"
+        placeholder="请输入密码"
+        type="password"
+      />
+      <template #label> 用户名 </template>
+    </k-form-item>
+    <k-button
+      a="1"
+      b="2"
+      size="medium"
+      type="primary"
+      :round="true"
+      @click="validateForm"
+    >
+      按钮
+    </k-button>
+  </k-form>
 </template>
 
 <style scoped></style>

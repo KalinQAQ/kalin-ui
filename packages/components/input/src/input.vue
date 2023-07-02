@@ -63,9 +63,8 @@ import {
   inject
 } from 'vue'
 import { inputProps, inputEmits } from './input'
-import { formItemContextKey } from '../../form/src/form-item'
 
-const formItemContext = inject(formItemContextKey)
+const formItemContext = inject('form-item')
 defineOptions({
   name: 'k-input',
   inheritAttrs: false

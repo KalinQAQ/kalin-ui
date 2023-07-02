@@ -11,11 +11,12 @@ import { ExtractPropTypes, InjectionKey, PropType } from 'vue'
 
 export type Arrayable<T> = T | T[]
 
+export const formItemValidateState = ['success', 'error', ''] as const
+
 export interface FormItemRule extends RuleItem {
   trigger?: Arrayable<string>
 }
 
-export const formItemValidateState = ['success', 'error', ''] as const
 export type FormItemValidateState = (typeof formItemValidateState)[number]
 
 export const formItemProps = {
@@ -37,4 +38,5 @@ export interface FormItemContext extends FormItemProps {
   ) => Promise<void>
 }
 
-export const formItemContextKey: InjectionKey<FormItemContext> = Symbol()
+export const FormItemContextKey: InjectionKey<FormItemContext> =
+  Symbol('form-item')

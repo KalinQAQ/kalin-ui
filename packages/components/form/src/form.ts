@@ -1,16 +1,14 @@
 // 这里用来定义 form表单 中所需要的属性
 
 import { ExtractDefaultPropTypes, InjectionKey, PropType } from 'vue'
-import { Arrayable, FormItemRule } from './form-item'
+import { Arrayable, FormItemRule, FormItemContext } from './form-item'
 
 export const formProps = {
-  model: Object, // 数据
+  model: Object,
   rules: {
-    // 校验规则
     type: Object as PropType<Record<string, Arrayable<FormItemRule>>>
   },
   showMessage: {
-    // 显示消息
     type: Boolean,
     default: true
   }
@@ -18,6 +16,9 @@ export const formProps = {
 
 // 表单属性
 export type FormProps = Partial<ExtractDefaultPropTypes<typeof formProps>>
-export type FormContext = FormProps
+export interface FormContext extends FormProps {
+  addField: (field: FormItemContext) => void
+}
+
 // 表单上下文key，包含所有props
-export const formContextKey: InjectionKey<FormContext> = Symbol()
+export const FormContextKey: InjectionKey<FormContext> = Symbol()
