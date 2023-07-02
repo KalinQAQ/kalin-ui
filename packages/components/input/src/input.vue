@@ -53,9 +53,19 @@
 <script lang="ts" setup>
 import { computed } from '@vue/reactivity'
 import { createNamespace } from '@kalin-ui/utils/create'
-import { useAttrs, useSlots, watch, ref, onMounted, nextTick } from 'vue'
+import {
+  useAttrs,
+  useSlots,
+  watch,
+  ref,
+  onMounted,
+  nextTick,
+  inject
+} from 'vue'
 import { inputProps, inputEmits } from './input'
+import { formItemContextKey } from '../../form/src/form-item'
 
+const formItemContext = inject(formItemContextKey)
 defineOptions({
   name: 'k-input',
   inheritAttrs: false
@@ -76,6 +86,7 @@ watch(
   // 监控值的变化，设置输入框的值
   () => props.modelValue,
   () => {
+    formItemContext?.validate('change')
     setNativeInputValue()
   }
 )
@@ -137,6 +148,7 @@ const handleFocus = (e: FocusEvent) => {
   emit('focus', e)
 }
 const handleBlur = (e: FocusEvent) => {
+  formItemContext?.validate('blur')
   emit('blur', e)
 }
 // --------------------------------------------------------

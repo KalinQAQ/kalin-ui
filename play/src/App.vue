@@ -192,7 +192,18 @@ const state = reactive({ username: '', password: '' })
     <template #append> append </template>
   </k-input>
 
-  <k-form-item prop="username">
+  <k-form-item
+    prop="username"
+    :rules="[
+      { required: true, message: '请输入用户名', trigger: 'blur' },
+      {
+        min: 6,
+        max: 10,
+        message: '用户名6-18位',
+        trigger: ['change', 'blur']
+      }
+    ]"
+  >
     <k-input placeholder="请输入用户名" v-model="state.username" />
     <template #label> 用户名 </template>
   </k-form-item>
