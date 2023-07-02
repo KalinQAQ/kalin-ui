@@ -3,6 +3,7 @@ import { Key, TreeOption } from '@kalin-ui/components/tree/src/tree'
 import { AddCircle } from '@vicons/ionicons5'
 import { reactive, ref } from 'vue'
 import { FormInstance } from '@kalin-ui/components/form'
+import { Values } from 'async-validator'
 
 function createData(level = 4, parentKey = ''): any {
   if (!level) return []
@@ -123,10 +124,10 @@ const state = reactive({ username: '', password: '' })
 
 const formRef = ref<FormInstance>()
 
-const validateForm = () => {
-  const form = formRef.value
-  form?.validate((valid, errors) => {
-    console.log(valid, errors)
+const validateForm = (form: FormInstance | undefined) => {
+  if (!form) return
+  form.validate((isVlalid: boolean, fields?: Values) => {
+    console.log(isVlalid, fields)
   })
 }
 </script>
@@ -238,7 +239,7 @@ const validateForm = () => {
       size="medium"
       type="primary"
       :round="true"
-      @click="validateForm"
+      @click="validateForm(formRef)"
     >
       按钮
     </k-button>

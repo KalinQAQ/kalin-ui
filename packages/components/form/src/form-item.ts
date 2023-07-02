@@ -12,12 +12,11 @@ import { ExtractPropTypes, InjectionKey, PropType } from 'vue'
 export type Arrayable<T> = T | T[]
 
 export const formItemValidateState = ['success', 'error', ''] as const
+export type FormItemValidateState = (typeof formItemValidateState)[number]
 
 export interface FormItemRule extends RuleItem {
   trigger?: Arrayable<string>
 }
-
-export type FormItemValidateState = (typeof formItemValidateState)[number]
 
 export const formItemProps = {
   prop: String,

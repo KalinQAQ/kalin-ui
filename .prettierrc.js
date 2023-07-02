@@ -1,5 +1,5 @@
 module.exports = {
-  printWidth: 80,
+  // printWidth: 80,
   tabWidth: 2,
   useTabs: false,
   semi: false, // 未尾分号, default:  true

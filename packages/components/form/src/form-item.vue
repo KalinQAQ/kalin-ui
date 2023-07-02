@@ -44,22 +44,22 @@ defineOptions({
 
 // 这里主要是检验逻辑
 
-const validateState = ref<FormItemValidateState>('') // success  s
+const validateState = ref<FormItemValidateState>('') // success
 const validateMessage = ref('')
 
-const converArray = (
+const convertArray = (
   rules: Arrayable<FormItemRule> | undefined
 ): FormItemRule[] => {
   return rules ? (Array.isArray(rules) ? rules : [rules]) : []
 }
 
 const _rules = computed(() => {
-  const myRules = converArray(props.rules) // 自己的规则
+  const myRules = convertArray(props.rules) // 自己的规则
   const formRules = formContext?.rules
   if (formRules && props.prop) {
     const _temp = formRules[props.prop]
     if (_temp) {
-      myRules.push(...converArray(_temp))
+      myRules.push(...convertArray(_temp))
     }
   }
   return myRules
@@ -79,14 +79,15 @@ const getRuleFiltered = (trigger: string) => {
   })
 }
 
-const onValidationSuccesseded = () => {
-  validateState.value = 'success'
-  validateMessage.value = ''
+const onValidationSuccesseded = (state: FormItemValidateState) => {
+  validateState.value = state
+  formContext?.emit('validate', props.prop!, true, '')
 }
 const onValidationFailed = (err: Values) => {
-  validateState.value = 'error'
   const { errors } = err
+  validateState.value = !errors ? 'success' : 'error'
   validateMessage.value = errors ? errors[0].message : ''
+  formContext?.emit('validate', props.prop!, false, validateMessage.value)
 }
 const validate: FormItemContext['validate'] = async (trigger, callback?) => {
   // 拿到触发的时机，校验是否通过可以调用callback 或者调用promise.then方法
@@ -108,7 +109,7 @@ const validate: FormItemContext['validate'] = async (trigger, callback?) => {
       [modelName]: model[modelName]
     })
     .then(() => {
-      onValidationSuccesseded()
+      onValidationSuccesseded('success')
     })
     .catch((err: Values) => {
       onValidationFailed(err)
@@ -126,6 +127,7 @@ const context: FormItemContext = {
 provide('form-item', context)
 
 onMounted(() => {
-  formContext?.addField(context) // 我将自己的上下文传递给了父亲
+  // 如果有属性，就让其收集上下⽂
+  formContext?.addField(context)
 })
 </script>

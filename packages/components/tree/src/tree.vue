@@ -206,7 +206,6 @@ watch(
   value => {
     if (value) {
       selectedKeysRef.value = value
-      console.log(selectedKeysRef.value)
     }
   },
   {

@@ -7,9 +7,10 @@
 <script setup lang="ts">
 import { createNamespace } from '@kalin-ui/utils/create'
 import { Values } from 'async-validator'
-import { provide } from 'vue'
-import { formProps, FormContextKey, FormContext } from './form'
+import { provide, reactive } from 'vue'
+import { formProps, FormContextKey, FormContext, formEmits } from './form'
 import { FormItemContext } from './form-item'
+import { toRefs } from 'vue'
 const bem = createNamespace('form')
 defineOptions({
   name: 'k-form'
@@ -47,15 +48,19 @@ const validate = async (
   }
 }
 
-const addField: FormContext['addField'] = context => {
-  fields.push(context)
+const emit = defineEmits(formEmits)
+const addField: FormContext['addField'] = field => {
+  fields.push(field)
 }
 
-const context = {
-  ...props,
-  addField
-}
-provide(FormContextKey, context)
+provide(
+  FormContextKey,
+  reactive({
+    ...toRefs(props),
+    emit,
+    addField
+  })
+)
 
 // 将form表单的校验方法 暴露给用户，用户可以通过ref来进行检测
 defineExpose({
