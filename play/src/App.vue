@@ -244,6 +244,8 @@ const validateForm = (form: FormInstance | undefined) => {
       按钮
     </k-button>
   </k-form>
+
+  <k-upload></k-upload>
 </template>
 
 <style scoped></style>
