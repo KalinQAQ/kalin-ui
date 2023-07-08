@@ -4,6 +4,7 @@ import { AddCircle } from '@vicons/ionicons5'
 import { reactive, ref } from 'vue'
 import { FormInstance } from '@kalin-ui/components/form'
 import { Values } from 'async-validator'
+import { UploadRawFile } from '@kalin-ui/components/upload'
 
 function createData(level = 4, parentKey = ''): any {
   if (!level) return []
@@ -130,6 +131,10 @@ const validateForm = (form: FormInstance | undefined) => {
     console.log(isVlalid, fields)
   })
 }
+
+const handleBeforeUpload = (rawFile: UploadRawFile) => {
+  return false
+}
 </script>
 
 <template>
@@ -245,7 +250,9 @@ const validateForm = (form: FormInstance | undefined) => {
     </k-button>
   </k-form>
 
-  <k-upload></k-upload>
+  <k-upload :multiple="true" :beforeUpload="handleBeforeUpload">
+    <k-button>点我上传</k-button>
+  </k-upload>
 </template>
 
 <style scoped></style>

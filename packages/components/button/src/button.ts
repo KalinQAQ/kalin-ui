@@ -48,7 +48,7 @@ export const buttonProps = {
   },
   iconPlacement: {
     type: String as PropType<Placement>,
-    default: 'left'
+    default: ''
   }
 } as const
 export const buttonEmits = {

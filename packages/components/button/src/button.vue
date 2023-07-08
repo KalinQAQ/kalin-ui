@@ -21,7 +21,7 @@
         </template>
       </k-icon>
     </template>
-    <slot></slot>
+    <slot> </slot>
     <template v-if="iconPlacement === 'right'">
       <k-icon>
         <LoadingComponent v-if="loading"></LoadingComponent>
