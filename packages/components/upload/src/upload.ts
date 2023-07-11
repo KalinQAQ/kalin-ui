@@ -1,6 +1,8 @@
 import { ExtractPropTypes, PropType } from 'vue'
 
-export {}
+// 编写组件的时候 需要定义组件所需要的属性，有了属性之后在去实现
+
+// 给每个文件进行包装 包装一个全新的类型
 
 export interface UploadFile {
   // input框
@@ -8,13 +10,13 @@ export interface UploadFile {
   name: string
   url?: string // new ObjectURL
   percentage?: number
-  raw: File
+  raw?: File
   size?: number
   status: string
 }
 export type UploadFiles = UploadFile[]
 
-// 给组件的使用也定义一些类型，给用户去使用的类型
+// 给组件的使用也定义一些类型 , 给用户去使用的类型
 export const baseProps = {
   FileList: {
     type: Array as PropType<UploadFiles>,
@@ -31,12 +33,13 @@ export const baseProps = {
   // input中所需要的类型
   name: {
     type: String,
-    default: ''
+    default: 'file'
   },
   accept: {
     type: String,
     default: ''
   },
+  // 上传文件调用ajax 需要的
   method: {
     type: String,
     default: 'post'
@@ -48,13 +51,17 @@ export const baseProps = {
   data: {
     type: Object,
     default: () => ({})
+  },
+  drag: {
+    type: Boolean,
+    default: false
   }
 } as const
 
 export type UploadRawFile = File & { uid: number }
 export type UploadProgressEvent = ProgressEvent & { pecetange: number }
 const NOOP = () => {}
-export const UploadProps = {
+export const uploadProps = {
   ...baseProps,
   onPreview: {
     // 预览的时候 可以用这个回调拿到上次的图片
@@ -71,9 +78,9 @@ export const UploadProps = {
     type: Function as PropType<(file: UploadFile) => void>,
     default: NOOP
   },
-  boforeRemove: {
+  beforeRemove: {
     type: Function as PropType<
-      (file: UploadFile, uploadFiles: UploadFiles) => void
+      (file: UploadFile, uploadFiles: UploadFiles) => Promise<boolean> | boolean
     >,
     default: NOOP
   },
@@ -107,7 +114,7 @@ export const UploadProps = {
   }
 } as const
 
-export type UploadProps = ExtractPropTypes<typeof UploadProps>
+export type UploadProps = ExtractPropTypes<typeof uploadProps>
 
 let id = 0
 export const genId = () => id++

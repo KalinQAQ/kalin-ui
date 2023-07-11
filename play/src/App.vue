@@ -133,7 +133,8 @@ const validateForm = (form: FormInstance | undefined) => {
 }
 
 const handleBeforeUpload = (rawFile: UploadRawFile) => {
-  return false
+  // return false
+  return true
 }
 </script>
 
@@ -236,7 +237,7 @@ const handleBeforeUpload = (rawFile: UploadRawFile) => {
         placeholder="请输入密码"
         type="password"
       />
-      <template #label> 用户名 </template>
+      <template #label>用户名</template>
     </k-form-item>
     <k-button
       a="1"
@@ -250,7 +251,12 @@ const handleBeforeUpload = (rawFile: UploadRawFile) => {
     </k-button>
   </k-form>
 
-  <k-upload :multiple="true" :beforeUpload="handleBeforeUpload">
+  <k-upload
+    multiple
+    :before-upload="handleBeforeUpload"
+    action="http://localhost:4000/upload"
+    drag
+  >
     <k-button>点我上传</k-button>
   </k-upload>
 </template>

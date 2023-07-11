@@ -1,7 +1,7 @@
 import { ExtractPropTypes, PropType } from 'vue'
 import {
   UploadProgressEvent,
-  UploadProps,
+  uploadProps,
   UploadRawFile,
   baseProps
 } from './upload'
@@ -9,7 +9,7 @@ import {
 const NOOP = () => {}
 export const uploadContentProps = {
   ...baseProps,
-  beforeUpload: UploadProps['beforeUpload'],
+  beforeUpload: uploadProps['beforeUpload'],
   onStart: {
     type: Function as PropType<(rawFile: UploadRawFile) => void>,
     default: NOOP
@@ -35,3 +35,15 @@ export const uploadContentProps = {
 } as const
 
 export type UploadContentProps = ExtractPropTypes<typeof uploadContentProps>
+
+export interface RequestOptions {
+  method: string
+  file: File
+  name: string
+  action: string
+  headers: Headers | Record<string, any>
+  data: Record<string, any>
+  onError: (e: any) => void
+  onSuccess: (response: any) => void
+  onProgress: (e: UploadProgressEvent) => void
+}
