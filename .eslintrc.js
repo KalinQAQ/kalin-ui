@@ -20,7 +20,10 @@ module.exports = {
     'vue/html-self-closing': 'off',
     // 'vue/singleline-html-element-content-newline': 'off',
     'vue/multi-word-component-names': 'off',
-    'vue/prefer-import-from-vue': 'off'
+    'vue/prefer-import-from-vue': 'off',
+    '@typescript-eslint/no-non-null-assertion': 'off',
+    'vue/component-definition-name-casing': 'off',
+    '@typescript-eslint/no-empty-function': 'off'
   },
   globals: {
     defineOptions: 'readonly'

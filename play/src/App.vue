@@ -259,6 +259,7 @@ const handleBeforeUpload = (rawFile: UploadRawFile) => {
   >
     <k-button>点我上传</k-button>
   </k-upload>
+  <k-calendar></k-calendar>
 </template>
 
 <style scoped></style>

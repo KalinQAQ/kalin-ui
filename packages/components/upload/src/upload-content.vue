@@ -1,5 +1,5 @@
 <template>
-  <div @click="handleClick" :class="[bem.b()]">
+  <div :class="[bem.b()]" @click="handleClick">
     <template v-if="drag">
       <uploadDragger @file="uploadFiles">
         <slot></slot>
@@ -22,7 +22,7 @@
 <script setup lang="ts">
 import uploadDragger from './upload-dragger.vue'
 import { ref } from 'vue'
-import { UploadProps, genId } from './upload'
+import { genId } from './upload'
 import { createNamespace } from '@kalin-ui/utils/create'
 import { UploadRawFile } from './upload'
 import { uploadContentProps } from './upload-content'

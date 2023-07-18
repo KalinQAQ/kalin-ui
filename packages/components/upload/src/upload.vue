@@ -40,8 +40,7 @@ const findFile = (rawFile: UploadRawFile) => {
 const uploadContentProps = computed(() => ({
   ...props,
   onStart: (rawFile: UploadRawFile) => {
-    // 上传之前的逻辑
-    console.log('start')
+    // 上传之前的逻辑，把上传的文件转化放入列表中
     const uploadFile: UploadFile = {
       uid: rawFile.uid,
       name: rawFile.name,
@@ -51,7 +50,7 @@ const uploadContentProps = computed(() => ({
       status: 'start'
     }
     uploadFile.url = URL.createObjectURL(rawFile) // 这个字段可以实现预览
-    uploadFiles.value = [...uploadFiles.value, uploadFile]
+    uploadFiles.value = [...uploadFiles.value, uploadFile] // 上传列表
     props.onChange(uploadFile)
   },
   onProgress: (e: UploadProgressEvent, rawFile: UploadRawFile) => {

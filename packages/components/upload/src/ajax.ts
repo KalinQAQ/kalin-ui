@@ -5,8 +5,9 @@ export function httpRequest(options: RequestOptions) {
   const xhr = new XMLHttpRequest()
   const action = options.action
 
-  xhr.open(options.method, action, true)
+  xhr.open(options.method, action, true) // 初始化一个新创建的请求
 
+  // 监听加载进度
   xhr.upload.addEventListener('progress', e => {
     // 加载的总数和已经加载的
 
@@ -25,12 +26,14 @@ export function httpRequest(options: RequestOptions) {
 
   const formData = new FormData()
   if (options.data) {
+    // 传请求体
     for (const [key, value] of Object.entries(options.data)) {
       formData.append(key, value)
     }
   }
+  // 传文件
   formData.append(options.name, options.file)
-
+  // 监听加载完成
   xhr.onload = function () {
     if (xhr.status < 300 && xhr.status >= 200) {
       options.onSuccess(xhr.response)
