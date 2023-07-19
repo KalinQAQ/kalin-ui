@@ -23,3 +23,9 @@ export type CalendarDateCell = {
   text: number
   type: CalendarDateCellType
 }
+export type CalendarDateType =
+  | 'prev-month'
+  | 'next-month'
+  | 'prev-year'
+  | 'today'
+  | 'next-year'

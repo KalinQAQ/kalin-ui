@@ -136,6 +136,8 @@ const handleBeforeUpload = (rawFile: UploadRawFile) => {
   // return false
   return true
 }
+
+const currentDate = ref(new Date())
 </script>
 
 <template>
@@ -259,7 +261,6 @@ const handleBeforeUpload = (rawFile: UploadRawFile) => {
   >
     <k-button>点我上传</k-button>
   </k-upload>
-  <k-calendar></k-calendar>
+  {{ currentDate }}
+  <k-calendar v-model="currentDate"></k-calendar>
 </template>
-
-<style scoped></style>
