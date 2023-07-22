@@ -5,6 +5,9 @@ import { reactive, ref } from 'vue'
 import { FormInstance } from '@kalin-ui/components/form'
 import { Values } from 'async-validator'
 import { UploadRawFile } from '@kalin-ui/components/upload'
+import { Random } from 'mockjs'
+import Item from './Item.vue'
+import { DefineComponent } from 'vue'
 
 function createData(level = 4, parentKey = ''): any {
   if (!level) return []
@@ -138,6 +141,29 @@ const handleBeforeUpload = (rawFile: UploadRawFile) => {
 }
 
 const currentDate = ref(new Date())
+
+const totalCount = 100
+interface DataType {
+  id: number
+  name: string
+  desc: string
+  index: number
+}
+const listData: Array<DataType> = []
+
+let index = 0
+while (index++ !== totalCount) {
+  listData.push({
+    id: index,
+    name: Random.name(),
+    desc: Random.csentence(20, 120),
+    index
+  })
+}
+
+const items = ref(listData)
+
+console.log(items)
 </script>
 
 <template>
@@ -263,4 +289,23 @@ const currentDate = ref(new Date())
   </k-upload>
   {{ currentDate }}
   <k-calendar v-model="currentDate"></k-calendar>
+
+  <k-virtual-scroll-list
+    class="virtual-list"
+    :data-sources="items"
+    data-key="id"
+    :keeps="30"
+    :estimate-size="80"
+    :data-component="(Item as DefineComponent<{}, {}, any>)"
+  >
+  </k-virtual-scroll-list>
 </template>
+
+<style lang="scss">
+.virtual-list {
+  width: 100%;
+  height: 500px;
+  overflow-y: scroll;
+  border: 3px solid red;
+}
+</style>

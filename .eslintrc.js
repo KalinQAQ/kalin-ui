@@ -23,7 +23,9 @@ module.exports = {
     'vue/prefer-import-from-vue': 'off',
     '@typescript-eslint/no-non-null-assertion': 'off',
     'vue/component-definition-name-casing': 'off',
-    '@typescript-eslint/no-empty-function': 'off'
+    '@typescript-eslint/no-empty-function': 'off',
+    'no-empty-pattern': 'off',
+    '@typescript-eslint/ban-types': 'off'
   },
   globals: {
     defineOptions: 'readonly'

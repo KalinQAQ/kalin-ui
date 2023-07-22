@@ -10,6 +10,7 @@ import Input from '@kalin-ui/components/input'
 import { FormItem, Form } from '@kalin-ui/components/Form'
 import Upload from '@kalin-ui/components/upload'
 import Calendar from '@kalin-ui/components/calendar'
+import Virtual from '@kalin-ui/components/virtual-scroll-list'
 
 const plugins = [
   Icon,
@@ -20,7 +21,8 @@ const plugins = [
   FormItem,
   Form,
   Upload,
-  Calendar
+  Calendar,
+  Virtual
 ]
 
 const app = createApp(App)
