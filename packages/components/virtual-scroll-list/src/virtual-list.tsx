@@ -1,12 +1,12 @@
 import { defineComponent, onBeforeMount, ref } from 'vue'
 import { RangeOptions, updateType, virtualProps } from './props'
 import { initVirtual } from './virtual'
+import VirtualItem from './virtual-item'
 
 export default defineComponent({
   name: 'k-virtual-scroll-list',
   props: virtualProps,
   setup(props, {}) {
-    // return () => {
     // 默认情况下我们希望显示30条数据，其它的要用空白来代替
     // 给内部盒子一个非常高的高度 + translate 来实现
     // 用上下padding 来撑开
@@ -47,14 +47,30 @@ export default defineComponent({
       const { dataSources, dataComponent, dataKey } = props
       for (let index = start; index <= end; index++) {
         const dataSource = dataSources[index]
-        const uniqueKey = (dataSource as any)[dataKey]
         if (dataSource) {
+          const uniqueKey = (dataSource as any)[dataKey]
           slots.push(
-            <dataComponent key={uniqueKey} source={dataSource}></dataComponent>
+            // <dataComponent key={uniqueKey} source={dataSource}></dataComponent>
+            <VirtualItem
+              uniqueKey={uniqueKey}
+              source={dataSource}
+              component={dataComponent}
+              onItemResize={onItemResize}
+            ></VirtualItem>
           )
         }
       }
       return slots
+    }
+    function onItemResize(id: string | number, size: number) {
+      virtual.saveSize(id, size)
+    }
+    const root = ref<HTMLElement | null>()
+    function onScroll() {
+      if (root.value) {
+        const offset = root.value.scrollTop
+        virtual.handleScroll(offset)
+      }
     }
 
     return () => {
@@ -64,11 +80,10 @@ export default defineComponent({
         padding: `${padFront}px 0 ${padBehind}px`
       }
       return (
-        <div>
+        <div onScroll={onScroll} ref={root}>
           <div style={paddingStyle}>{genRenderComponent()}</div>
         </div>
       )
     }
-    // }
   }
 })

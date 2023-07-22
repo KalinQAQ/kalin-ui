@@ -162,8 +162,6 @@ while (index++ !== totalCount) {
 }
 
 const items = ref(listData)
-
-console.log(items)
 </script>
 
 <template>
@@ -288,7 +286,14 @@ console.log(items)
     <k-button>点我上传</k-button>
   </k-upload>
   {{ currentDate }}
-  <k-calendar v-model="currentDate"></k-calendar>
+  <k-calendar v-model="currentDate">
+    <template #date-cell="{ data }">
+      <p :class="data.isSelected ? 'is-selected' : ''">
+        {{ data.day.split('-').slice(1).join('-') }}
+        {{ data.isSelected ? '✔️' : '' }}
+      </p>
+    </template>
+  </k-calendar>
 
   <k-virtual-scroll-list
     class="virtual-list"

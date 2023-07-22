@@ -2,8 +2,9 @@
   <div
     class="item"
     :style="{
-      height: '80px'
+      height: '70px'
     }"
+    :data-index="source.index"
   >
     <div class="head">
       <span>{{ source.index }}</span>
