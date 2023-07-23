@@ -8,6 +8,7 @@ const enum CALC_TYPE {
 export function initVirtual(param: VirtualOptions, update: updateType) {
   let offsetValue = 0 // 初始偏移量
   let caclType = CALC_TYPE.INIT
+  let firstRangeAvg = 0
   let fixedSizeVal = 0 // 默认值是0
   const sizes = new Map<string | number, number>()
   const range: RangeOptions = {
@@ -20,10 +21,27 @@ export function initVirtual(param: VirtualOptions, update: updateType) {
     return caclType === CALC_TYPE.FIXED
   }
   function getEstimateSize() {
-    return isFixed() ? fixedSizeVal : param.estimateSize
+    // 优化平均值
+    return isFixed() ? fixedSizeVal : firstRangeAvg || param.estimateSize
+  }
+  function getIndexOffset(idx: number) {
+    if (!idx) return 0
+    let offset = 0
+    for (let i = 0; i < idx; i++) {
+      const indexSize = sizes.get(param.uniqueIds[i])
+      offset += typeof indexSize === 'number' ? indexSize : getEstimateSize()
+    }
+    return offset
   }
   function getPadFront() {
-    return getEstimateSize() * range.start
+    // 准确计算上偏移量
+    if (isFixed()) {
+      return fixedSizeVal * range.start
+    } else {
+      // 将滚动后的元素累加一遍 计算上padding
+
+      return getIndexOffset(range.start)
+    }
   }
   function getPadBehind() {
     const lastIndex = param.uniqueIds.length - 1
@@ -52,7 +70,32 @@ export function initVirtual(param: VirtualOptions, update: updateType) {
   }
   function getScrollOvers() {
     // 根据划过的偏移量 / 每项的高度 就是划过的个数
-    return Math.floor(offsetValue / getEstimateSize())
+    // getEstimateSize() 这个值是预估的，我们要精确的找到滚动了多少个
+    if (isFixed()) {
+      return Math.floor(offsetValue / getEstimateSize())
+    } else {
+      // 获取最接近的滚动的那一项，计算每一项的偏移量，看与哪一项最接近
+      // 有序递增查找 -> 二分查找
+      let low = 0
+      let high = param.uniqueIds.length
+      let middle = 0
+      let middleOffset = 0
+
+      while (low <= high) {
+        // O(logn)
+        middle = low + Math.floor((high - low) / 2)
+        middleOffset = getIndexOffset(middle)
+        if (middleOffset == offsetValue) {
+          return middle
+        } else if (middleOffset < offsetValue) {
+          low = middle + 1
+        } else if (middleOffset > offsetValue) {
+          high = middle - 1
+        }
+      }
+      // 12.5个
+      return low > 0 ? --low : 0
+    }
   }
   function getEndByStart(start: number) {
     const computedEnd = start + param.keeps - 1
@@ -92,7 +135,6 @@ export function initVirtual(param: VirtualOptions, update: updateType) {
       handleBehind()
     }
   }
-
   function saveSize(id: string | number, size: number) {
     sizes.set(id, size)
 
@@ -107,6 +149,15 @@ export function initVirtual(param: VirtualOptions, update: updateType) {
 
     // 尽可能不要采用 estimateSize 来进行操作
     // 有固定高度 、 动态高度
+
+    if (caclType === CALC_TYPE.DYNAMIC) {
+      // 根据已经加载的数据算一个平均值 来撑开滚动条
+      // 根据当前展示的数据 来计算一个滚动条的值
+      if (sizes.size < Math.min(param.keeps, param.uniqueIds.length)) {
+        firstRangeAvg =
+          [...sizes.values()].reduce((p, v) => p + v, 0) / sizes.size
+      }
+    }
   }
 
   // 0-30
