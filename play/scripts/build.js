@@ -42,10 +42,10 @@ const rollupOptions = {
 const createPackageJson = name => {
   // 预设
   const fileStr = `{
-    "name": "${name ? name : 'sheep-ui'}",
+    "name": "${name ? name : 'kalin-ui'}",
     "version": "${version}",
-    "main": "${name ? 'index.umd.js' : 'sheep-ui.umd.js'}",
-    "module": "${name ? 'index.umd.js' : 'sheep-ui.es.js'}",
+    "main": "${name ? 'index.umd.js' : 'kalin-ui.umd.js'}",
+    "module": "${name ? 'index.umd.js' : 'kalin-ui.es.js'}",
     "author": "kalin",
     "description": "",
     "repository": {
