@@ -277,7 +277,7 @@ const items = ref(listData)
     </k-button>
   </k-form>
 
-  <k-upload
+  <!-- <k-upload
     multiple
     :before-upload="handleBeforeUpload"
     action="http://localhost:4000/upload"
@@ -293,9 +293,9 @@ const items = ref(listData)
         {{ data.isSelected ? '✔️' : '' }}
       </p>
     </template>
-  </k-calendar>
+  </k-calendar> -->
 
-  <k-virtual-scroll-list
+  <!-- <k-virtual-scroll-list
     class="virtual-list"
     :data-sources="items"
     data-key="id"
@@ -303,7 +303,34 @@ const items = ref(listData)
     :estimate-size="80"
     :data-component="(Item as DefineComponent<{}, {}, any>)"
   >
-  </k-virtual-scroll-list>
+  </k-virtual-scroll-list> -->
+
+  <hr />
+
+  <k-row>
+    <k-col :span="6" style="background: pink">111</k-col>
+    <k-col :span="6" style="background: purple">222</k-col>
+    <k-col :span="6" style="background: green">333</k-col>
+  </k-row>
+  <k-row :gutter="20">
+    <k-col :span="8" style="background: pink">111</k-col>
+    <k-col :span="8" style="background: purple">222</k-col>
+    <k-col :span="8" style="background: green">333</k-col>
+  </k-row>
+  <div style="width: 80%; border: 3px red solid; margin: 0 auto">
+    <k-row :gutter="20">
+      <k-col :span="8" style="background: pink">111</k-col>
+      <k-col :span="8" style="background: purple">222</k-col>
+      <k-col :span="8" style="background: green">333</k-col>
+    </k-row>
+  </div>
+  <div style="width: 80%; border: 3px red solid; margin: 0 auto">
+    <k-row justify="space-around">
+      <k-col :span="2" style="background: pink">111</k-col>
+      <k-col :span="2" style="background: purple">222</k-col>
+      <k-col :span="2" style="background: green">333</k-col>
+    </k-row>
+  </div>
 </template>
 
 <style lang="scss">

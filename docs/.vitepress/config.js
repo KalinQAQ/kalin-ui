@@ -9,7 +9,6 @@ module.exports = {
     repo: 'https://gitee.com/login',
     footer: {
       message: 'Released under the MIT License.'
-      // copyright: 'Copyright © 2022-present Zi Shui'
     },
     nav: [
       { text: '指南', link: '/guide/installation', activeMatch: '/guide/' },

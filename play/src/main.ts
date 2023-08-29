@@ -11,6 +11,9 @@ import { FormItem, Form } from '@kalin-ui/components/Form'
 import Upload from '@kalin-ui/components/upload'
 import Calendar from '@kalin-ui/components/calendar'
 import Virtual from '@kalin-ui/components/virtual-scroll-list'
+import Row from '@kalin-ui/components/row'
+import Col from '@kalin-ui/components/col'
+import CheckboxGroup from '@kalin-ui/components/checkbox-group'
 
 const plugins = [
   Icon,
@@ -22,7 +25,10 @@ const plugins = [
   Form,
   Upload,
   Calendar,
-  Virtual
+  Virtual,
+  Row,
+  Col,
+  CheckboxGroup
 ]
 
 const app = createApp(App)

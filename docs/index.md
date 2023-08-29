@@ -2,7 +2,7 @@
 layout: home
 
 hero:
-  name: kalin-ui 组件库
+  name: k-ui 组件库
   text: 基于 Vue 3 的组件库.
   tagline: 掌握 vue3 组件编写
   actions:

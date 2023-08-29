@@ -1,9 +1,9 @@
 import DefaultTheme from 'vitepress/theme'
 import '@kalin-ui/theme-chalk/src/index.scss'
-import NIcon from '@kalin-ui/components/icon'
+import KIcon from '@kalin-ui/components/icon'
 export default {
   ...DefaultTheme,
   enhanceApp({ app }) {
-    app.use(NIcon) // 注册组件
+    app.use(KIcon) // 注册组件
   }
 }

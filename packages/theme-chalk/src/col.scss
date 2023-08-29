@@ -1,0 +1,17 @@
+@use 'mixins/mixins' as *;
+@use 'common/var' as *;
+
+@include b(col) {
+  box-sizing: border-box;
+  @for $i from 1 through 24 {
+    &.k-col-span-#{$i} {
+      max-width: (calc(1 / 24) * $i * 100) * 1%;
+      flex: (calc(1 / 24) * $i * 100) * 1%;
+    }
+    &.k-col-offset-#{$i} {
+      margin-left: (calc(1 / 24) * $i * 100) * 1%;
+    }
+  }
+}
+
+//  生成 24 种写法 span=1 span=2

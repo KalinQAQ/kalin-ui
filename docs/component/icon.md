@@ -1,6 +1,6 @@
 # Icon 图标
 
-z-ui 推荐使用 xicons 作为图标库。
+k-ui 推荐使用 xicons 作为图标库。
 
 ```
 $ pnpm install @vicons/ionicons5
