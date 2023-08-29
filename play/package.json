@@ -6,10 +6,13 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "gen-version": "node scripts/gen-version",
+    "build:components": "npm run gen-version && node ./scripts/build.js"
   },
   "dependencies": {
     "@vicons/ionicons5": "^0.12.0",
+    "fs-extra": "^11.1.1",
     "vue": "^3.2.47"
   },
   "devDependencies": {
