@@ -1,25 +1,45 @@
 <template>
   <div :class="bem.b()">
     <!-- 模板有自带的优化，如果自定义比较强的我们采用 tsx来编写 -->
-    <k-virtual-list :items="flattenTree" :remain="8" :size="35">
-      <template #default="{ node }">
-        <k-tree-node
-          :key="node.key"
-          :node="node"
-          :expanded="isExpanded(node)"
-          :loading-keys="loadingKeysRef"
-          :selected-keys="selectedKeysRef"
-          :disabled="isDisabled(node)"
-          :show-checkbox="showCheckbox"
-          :checked="isChecked(node)"
-          :indeterminate="isIndeterminate(node)"
-          @select="handleSelect"
-          @toggle="toggleExpand(node)"
-          @check="toggleCheck"
-        >
-        </k-tree-node>
-      </template>
-    </k-virtual-list>
+    <template v-if="!props.virtualScroll">
+      <k-tree-node
+        v-for="node in flattenTree"
+        :key="node.key"
+        :node="node"
+        :expanded="isExpanded(node)"
+        :loading-keys="loadingKeysRef"
+        :selected-keys="selectedKeysRef"
+        :disabled="isDisabled(node)"
+        :show-checkbox="showCheckbox"
+        :checked="isChecked(node)"
+        :indeterminate="isIndeterminate(node)"
+        @select="handleSelect"
+        @toggle="toggleExpand(node)"
+        @check="toggleCheck"
+      >
+      </k-tree-node>
+    </template>
+    <template v-else>
+      <k-virtual-list :items="flattenTree" :remain="8" :size="35">
+        <template #default="{ node }">
+          <k-tree-node
+            :key="node.key"
+            :node="node"
+            :expanded="isExpanded(node)"
+            :loading-keys="loadingKeysRef"
+            :selected-keys="selectedKeysRef"
+            :disabled="isDisabled(node)"
+            :show-checkbox="showCheckbox"
+            :checked="isChecked(node)"
+            :indeterminate="isIndeterminate(node)"
+            @select="handleSelect"
+            @toggle="toggleExpand(node)"
+            @check="toggleCheck"
+          >
+          </k-tree-node>
+        </template>
+      </k-virtual-list>
+    </template>
   </div>
 </template>
 

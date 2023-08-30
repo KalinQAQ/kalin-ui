@@ -181,6 +181,7 @@ const items = ref(listData)
     selectable
     show-checkbox
     :default-checked-keys="['40']"
+    virtual-scroll
   >
     <template #default="{ node }"> {{ node.key }} - {{ node.label }} </template>
   </k-tree>

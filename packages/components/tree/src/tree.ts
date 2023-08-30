@@ -66,6 +66,10 @@ export const treeProps = {
   defaultCheckedKeys: {
     type: Array as PropType<Key[]>,
     default: () => []
+  },
+  virtualScroll: {
+    type: Boolean,
+    default: false
   }
 } as const
 
