@@ -1,6 +1,6 @@
 {
     "name": "calendar",
-    "version": "0.0.0",
+    "version": "0.0.1",
     "main": "index.umd.js",
     "module": "index.umd.js",
     "author": "kalin",

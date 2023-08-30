@@ -13,7 +13,6 @@ import Calendar from '@kalin-ui/components/calendar'
 import Virtual from '@kalin-ui/components/virtual-scroll-list'
 import Row from '@kalin-ui/components/row'
 import Col from '@kalin-ui/components/col'
-import CheckboxGroup from '@kalin-ui/components/checkbox-group'
 
 const plugins = [
   Icon,
@@ -27,8 +26,7 @@ const plugins = [
   Calendar,
   Virtual,
   Row,
-  Col,
-  CheckboxGroup
+  Col
 ]
 
 const app = createApp(App)

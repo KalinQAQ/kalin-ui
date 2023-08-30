@@ -5,6 +5,7 @@ import {
   defineComponent,
   openBlock
 } from "./chunk-FYYTY2GY.js";
+import "./chunk-RSJERJUL.js";
 
 // ../node_modules/.pnpm/registry.npmmirror.com+@vicons+ionicons5@0.12.0/node_modules/@vicons/ionicons5/es/Accessibility.js
 var _hoisted_1 = {

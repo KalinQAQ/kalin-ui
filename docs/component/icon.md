@@ -1,3 +1,21 @@
+<style>
+    .example{
+        border: 1px solid #f5f5f5;
+        border-radius: 5px;
+        padding:20px
+    }
+    .k-inco {
+        margin:10px 5px
+    }
+    
+    details > summary:first-of-type {
+        font-size: 10px;
+        padding: 8px 0;
+        cursor: pointer;
+        color: #1989fa;
+    }
+</style>
+
 # Icon 图标
 
 k-ui 推荐使用 xicons 作为图标库。
@@ -13,30 +31,33 @@ $ pnpm install @vicons/ionicons5
 <script setup lang="ts">
 import { CashOutline } from '@vicons/ionicons5'
 </script>
-<k-icon color="red" size="40">
-  <CashOutline/>
-</k-icon>
 
-<k-icon color="green" size="40">
-  <CashOutline/>
-</k-icon>
-<k-icon color="blue" size="40">
-  <CashOutline/>
-</k-icon>
-<div>
+<div class="example">
+  <k-icon color="red" size="40">
+    <CashOutline/>
+  </k-icon>
 
-<k-icon color="red" size="60">
-  <CashOutline/>
-</k-icon>
-
-<k-icon color="green" size="60">
-  <CashOutline/>
-</k-icon>
-
-<k-icon color="blue" size="60">
-  <CashOutline/>
-</k-icon>
+  <k-icon color="green" size="40">
+    <CashOutline/>
+  </k-icon>
+  <k-icon color="blue" size="40">
+    <CashOutline/>
+  </k-icon>
+  <div>
+    <k-icon color="red" size="60">
+      <CashOutline/>
+    </k-icon>
+    <k-icon color="green" size="60">
+      <CashOutline/>
+    </k-icon>
+    <k-icon color="blue" size="60">
+      <CashOutline/>
+    </k-icon>
+  </div>
 </div>
+
+<details>
+<summary>展开查看</summary>
 
 ```vue
 <script setup lang="ts">
@@ -48,6 +69,8 @@ import { CashOutline } from '@vicons/ionicons5'
   </k-icon>
 </template>
 ```
+
+</details>
 
 ## API
 

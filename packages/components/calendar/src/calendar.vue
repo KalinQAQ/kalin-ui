@@ -189,7 +189,7 @@ function getCellClass({ text, type }: CalendarDateCell) {
 const currentDate = computed(() => {
   return `${date.value.year()}年${
     date.value.month() + 1
-  }月${date.value.day()}日`
+  }月${date.value.date()}日`
 })
 
 function getSlotData({ text, type }: CalendarDateCell) {

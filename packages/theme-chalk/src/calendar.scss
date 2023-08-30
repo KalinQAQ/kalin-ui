@@ -32,11 +32,13 @@
 
     @include when(selected) {
       color: #fff;
-      background: $color-danger;
+      background: $color-primary;
+      opacity: 0.5;
     }
     @include when(warning) {
       color: #fff;
       background: $color-warning;
+      opacity: 0.5;
     }
   }
   td.prev,
@@ -60,6 +62,7 @@
   font-size: 16px;
   &:hover {
     cursor: pointer;
-    background: $color-success;
+    background: $color-primary;
+    opacity: 0.5;
   }
 }

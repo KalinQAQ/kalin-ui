@@ -1,6 +1,6 @@
 {
     "name": "kalin-ui",
-    "version": "0.0.0",
+    "version": "0.0.1",
     "main": "kalin-ui.umd.js",
     "module": "kalin-ui.es.js",
     "author": "kalin",

@@ -277,7 +277,7 @@ const items = ref(listData)
     </k-button>
   </k-form>
 
-  <!-- <k-upload
+  <k-upload
     multiple
     :before-upload="handleBeforeUpload"
     action="http://localhost:4000/upload"
@@ -293,7 +293,7 @@ const items = ref(listData)
         {{ data.isSelected ? '✔️' : '' }}
       </p>
     </template>
-  </k-calendar> -->
+  </k-calendar>
 
   <!-- <k-virtual-scroll-list
     class="virtual-list"
