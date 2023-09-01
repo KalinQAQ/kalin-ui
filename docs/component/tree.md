@@ -14,9 +14,9 @@
   }
 </style>
 
-# 🌲 树 Tree
+# 树 Tree
 
-基本使用
+## 基本使用
 
 <script setup lang="ts">
 import { ref } from 'vue'
@@ -455,7 +455,3 @@ const data = ref<TreeOption[]>(createData())
 | selectedKeys | Array<string \| number> |  | 选中的节点列表，需要配合 selectable 使用 |
 | virtual-scroll | boolean | false | 是否启用虚拟滚动 |
 | onLoad | (node:TreeOption)=>Promise<TreeOption[]> | undefined | 异步加载方法 |
-
-```
-
-```

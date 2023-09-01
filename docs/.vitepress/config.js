@@ -31,7 +31,8 @@ module.exports = {
             { text: 'Icon', link: '/component/icon' },
             { text: 'Button', link: '/component/button' },
             { text: 'tree', link: '/component/tree' },
-            { text: 'Calendar', link: '/component/calendar' }
+            { text: 'Calendar', link: '/component/calendar' },
+            { text: 'Upload', link: '/component/upload' }
           ]
         }
       ]

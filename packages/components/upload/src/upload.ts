@@ -1,7 +1,5 @@
 import { ExtractPropTypes, PropType } from 'vue'
 
-// 编写组件的时候 需要定义组件所需要的属性，有了属性之后在去实现
-
 // 给每个文件进行包装 包装一个全新的类型
 
 export interface UploadFile {

@@ -2,8 +2,12 @@
   <UploadContent v-bind="uploadContentProps">
     <slot></slot>
   </UploadContent>
-  {{ uploadFiles }}
-  <!-- 列表 -->
+  <div v-for="file in uploadFiles" :key="file.uid">
+    <span>
+      {{ file.name }}
+    </span>
+    <k-button @click="deleteUpload(file.uid!)">删除</k-button>
+  </div>
   <!-- 预览 -->
 </template>
 
@@ -33,6 +37,11 @@ watch(uploadFiles, newVal => {
   // 监控文件变化，发射事件
   emits('onUpdate:file-list', newVal)
 })
+
+const deleteUpload = (uid: number) => {
+  const file: UploadFile = uploadFiles.value.find(file => file.uid === uid)!
+  uploadFiles.value.splice(uploadFiles.value.indexOf(file), 1)
+}
 
 const findFile = (rawFile: UploadRawFile) => {
   return uploadFiles.value.find(file => file.uid === rawFile.uid)

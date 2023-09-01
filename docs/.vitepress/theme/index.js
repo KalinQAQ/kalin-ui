@@ -4,8 +4,9 @@ import KIcon from '@kalin-ui/components/icon'
 import KButton from '@kalin-ui/components/button'
 import KTree from '@kalin-ui/components/tree'
 import KCalendar from '@kalin-ui/components/calendar'
+import KUpload from '@kalin-ui/components/upload'
 
-const plugins = [KIcon, KTree, KButton, KCalendar]
+const plugins = [KIcon, KTree, KButton, KCalendar, KUpload]
 export default {
   ...DefaultTheme,
   enhanceApp({ app }) {
