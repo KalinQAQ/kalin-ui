@@ -6,18 +6,19 @@
   button {
     transform: scale(0.8);
   }
-  @include e(pager) {
-    list-style: none !important;
-    display: flex;
-    padding-left: 0;
-    align-items: center;
-    li {
-      cursor: pointer;
-      margin-top: 0 !important;
-      padding: 0 4px;
-    }
-    li.current {
-      color: rgb(96, 96, 255);
-    }
+}
+
+@include b(pager) {
+  list-style: none !important;
+  display: flex;
+  padding-left: 0;
+  align-items: center;
+  li {
+    cursor: pointer;
+    margin-top: 0 !important;
+    padding: 0 4px;
+  }
+  li.current {
+    color: rgb(96, 96, 255);
   }
 }

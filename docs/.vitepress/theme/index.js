@@ -6,8 +6,9 @@ import KTree from '@kalin-ui/components/tree'
 import KCalendar from '@kalin-ui/components/calendar'
 import KUpload from '@kalin-ui/components/upload'
 import KPagination from '@kalin-ui/components/pagination'
+import KPager from '@kalin-ui/components/pager'
 
-const plugins = [KIcon, KTree, KButton, KCalendar, KUpload, KPagination]
+const plugins = [KIcon, KTree, KButton, KCalendar, KUpload, KPagination, KPager]
 export default {
   ...DefaultTheme,
   enhanceApp({ app }) {

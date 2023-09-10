@@ -34,7 +34,8 @@ export const buttonProps = {
         'warning',
         'danger',
         'info',
-        'default'
+        'default',
+        ''
       ].includes(val)
     },
     default: ''

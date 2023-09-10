@@ -17,14 +17,14 @@ export default function usePage(defaultPageIndex = 1) {
     pageIndex.value += page
   }
 
-  const prePage = () => jumpPage(-1)
+  const prevPage = () => jumpPage(-1)
   const nextPage = () => jumpPage(1)
 
   return {
     pageIndex,
     setPageIndex,
     jumpPage,
-    prePage,
+    prevPage,
     nextPage
   }
 }

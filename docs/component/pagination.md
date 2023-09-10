@@ -51,3 +51,20 @@
 ```
 
 </details>
+
+# 分页器
+
+通过`k-pager`直接使用分页器组件
+
+<div class="example">
+  当你有较少页码
+  <k-pager :total="50"></k-pager>
+  当你页码超过7
+  <k-pager :total="1000"></k-pager>
+</div>
+
+### Pagination Props
+
+| 名称  | 类型     | 说明             |
+| ----- | -------- | ---------------- |
+| total | `number` | total item count |

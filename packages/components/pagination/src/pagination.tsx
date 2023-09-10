@@ -1,41 +1,7 @@
-import { computed, defineComponent, toRefs } from 'vue'
+import { defineComponent, ref } from 'vue'
 import { paginationProps } from './types'
-import usePage from './use-page'
 import { createNamespace } from '@kalin-ui/utils/create'
-
-function getCurrentPage(
-  totalPage: number,
-  pageIndex: number,
-  pagerCount: number
-) {
-  // [0, 1, 2, 3, 4, 5, 6, 7, 8]
-  const totalPageArr = Array.from(Array(totalPage).keys())
-
-  if (totalPage <= pagerCount) {
-    // 页码太少，全部显示
-    return totalPageArr.slice(2, totalPage)
-  } else {
-    // 计算中位数
-    const mid = Math.ceil(pagerCount / 2)
-    if (pageIndex <= mid) {
-      // [0, 1, 2, 3, 4, 5, 6, 7, 8]
-      // pageIndex = 3
-      // [2, 3, 4, 5, 6]
-      // 左边全显示
-      return totalPageArr.slice(2, pagerCount)
-    } else if (pageIndex >= totalPage - mid + 1) {
-      // pageIndex = 6
-      // [0, 1, 2, 3, 4, 5, 6, 7, 8]
-      // 右边全显示
-      return totalPageArr.slice(totalPage - pagerCount + 2, totalPage)
-    } else {
-      // 中间显示
-      // pageIndex = 4
-      // [2, 3, 4, 5, 6]
-      return totalPageArr.slice(pageIndex - mid + 2, pageIndex + mid - 1)
-    }
-  }
-}
+import KPager from '@kalin-ui/components/pager'
 
 export default defineComponent({
   name: 'KPagination',
@@ -51,63 +17,15 @@ export default defineComponent({
     // 6. 大于等于pagerCount的情况下，中间按钮数量等于pagerCount - 2
     // 7. 当中间页码左边的页数大于2时，应该出现左边的 ...
     // 8. 当中间页码右边的页数小于totalPage - 3时，应该出现右边的 ...
-    const { total, pageSize, pagerCount } = toRefs(props)
-    const totalPage = computed(() => Math.ceil(total.value / pageSize.value))
-    const { pageIndex, setPageIndex, jumpPage, prePage, nextPage } = usePage()
-    const centerPages = computed(() =>
-      getCurrentPage(totalPage.value, pageIndex.value, pagerCount.value)
-    )
+    const pager = ref()
 
     return () => {
       return (
         <div class={bem.b()}>
-          <k-button onClick={() => setPageIndex(pageIndex.value - 1)}>
-            上一页
-          </k-button>
+          <k-button onClick={() => pager.value.prevPage()}>上一页</k-button>
           {/* pager部分 */}
-          <ul class={bem.e('pager')}>
-            <li
-              onClick={() => setPageIndex(1)}
-              class={{ current: pageIndex.value === 1 }}
-            >
-              1
-            </li>
-            {/* 1.总页码totalPage大于按钮数量pagerCount */}
-            {/* 2.中间页码左边的页数大于Math.ceil(pagerCount.value / 2)时，应该出现左边的 ... */}
-            {totalPage.value > pagerCount.value &&
-              pageIndex.value > Math.ceil(pagerCount.value / 2) && (
-                <li class="more left" onClick={() => jumpPage(-5)}>
-                  ...
-                </li>
-              )}
-            {/* 总页面totalPage,当前页面pageIndex,最大显示页码pageCount */}
-            {centerPages.value.map(page => (
-              <li
-                onClick={() => setPageIndex(page)}
-                class={{ current: pageIndex.value === page }}
-              >
-                {page}
-              </li>
-            ))}
-
-            {/* 中间页码小于总页码 - 3，出现右边的... */}
-            {totalPage.value > pagerCount.value &&
-              pageIndex.value <
-                totalPage.value - Math.ceil(pagerCount.value / 2) + 1 && (
-                <li class="more right" onClick={() => jumpPage(5)}>
-                  ...
-                </li>
-              )}
-            {totalPage.value > 1 && (
-              <li
-                onClick={() => setPageIndex(totalPage.value)}
-                class={{ current: pageIndex.value === totalPage.value }}
-              >
-                {totalPage.value}
-              </li>
-            )}
-          </ul>
-          <k-button onClick={() => nextPage()}>下一页</k-button>
+          <KPager ref={pager} {...props}></KPager>
+          <k-button onClick={() => pager.value.nextPage()}>下一页</k-button>
         </div>
       )
     }
