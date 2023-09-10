@@ -1,8 +1,13 @@
 import { computed, defineComponent, toRefs } from 'vue'
-import { PaginationProps, paginationProps } from './types'
+import { paginationProps } from './types'
 import usePage from './use-page'
+import { createNamespace } from '@kalin-ui/utils/create'
 
-function getCurrentPage(totalPage, pageIndex, pagerCount) {
+function getCurrentPage(
+  totalPage: number,
+  pageIndex: number,
+  pagerCount: number
+) {
   // [0, 1, 2, 3, 4, 5, 6, 7, 8]
   const totalPageArr = Array.from(Array(totalPage).keys())
 
@@ -36,7 +41,8 @@ export default defineComponent({
   name: 'KPagination',
   props: paginationProps,
   emits: [],
-  setup(props, ctx) {
+  setup(props) {
+    const bem = createNamespace('pagination') // k-pagination
     // 1. 首页和尾页是常驻的，如果只有一页则不显示。
     // 2. 页码按钮有一个最大数量pagerCount,最多7个。
     // 3. 如果总页数totalPage大于pagerCount，则会出现显示不下的情况，这时显示不下的部分用...表示，并且这个...是可以快速往前、往后跳转N页的。
@@ -54,33 +60,54 @@ export default defineComponent({
 
     return () => {
       return (
-        <div class="k-pagination">
-          <button onClick={() => setPageIndex(pageIndex.value - 1)}>
+        <div class={bem.b()}>
+          <k-button onClick={() => setPageIndex(pageIndex.value - 1)}>
             上一页
-          </button>
+          </k-button>
           {/* pager部分 */}
-          <ul>
-            <li>1</li>
+          <ul class={bem.e('pager')}>
+            <li
+              onClick={() => setPageIndex(1)}
+              class={{ current: pageIndex.value === 1 }}
+            >
+              1
+            </li>
             {/* 1.总页码totalPage大于按钮数量pagerCount */}
             {/* 2.中间页码左边的页数大于Math.ceil(pagerCount.value / 2)时，应该出现左边的 ... */}
             {totalPage.value > pagerCount.value &&
               pageIndex.value > Math.ceil(pagerCount.value / 2) && (
-                <li class="more left">...</li>
+                <li class="more left" onClick={() => jumpPage(-5)}>
+                  ...
+                </li>
               )}
             {/* 总页面totalPage,当前页面pageIndex,最大显示页码pageCount */}
             {centerPages.value.map(page => (
-              <li>{page}</li>
+              <li
+                onClick={() => setPageIndex(page)}
+                class={{ current: pageIndex.value === page }}
+              >
+                {page}
+              </li>
             ))}
 
             {/* 中间页码小于总页码 - 3，出现右边的... */}
             {totalPage.value > pagerCount.value &&
               pageIndex.value <
                 totalPage.value - Math.ceil(pagerCount.value / 2) + 1 && (
-                <li class="more right">...</li>
+                <li class="more right" onClick={() => jumpPage(5)}>
+                  ...
+                </li>
               )}
-            {totalPage.value > 1 && <li>{totalPage.value}</li>}
+            {totalPage.value > 1 && (
+              <li
+                onClick={() => setPageIndex(totalPage.value)}
+                class={{ current: pageIndex.value === totalPage.value }}
+              >
+                {totalPage.value}
+              </li>
+            )}
           </ul>
-          <button onClick={() => nextPage()}>下一页</button>
+          <k-button onClick={() => nextPage()}>下一页</k-button>
         </div>
       )
     }
