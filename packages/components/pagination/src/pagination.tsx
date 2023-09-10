@@ -1,4 +1,4 @@
-import { defineComponent, ref } from 'vue'
+import { computed, defineComponent, onMounted, ref, watch } from 'vue'
 import { paginationProps } from './types'
 import { createNamespace } from '@kalin-ui/utils/create'
 import KPager from '@kalin-ui/components/pager'
@@ -6,8 +6,8 @@ import KPager from '@kalin-ui/components/pager'
 export default defineComponent({
   name: 'KPagination',
   props: paginationProps,
-  emits: [],
-  setup(props) {
+  emits: ['update:modelValue'],
+  setup(props, { emit }) {
     const bem = createNamespace('pagination') // k-pagination
     // 1. 首页和尾页是常驻的，如果只有一页则不显示。
     // 2. 页码按钮有一个最大数量pagerCount,最多7个。
@@ -18,14 +18,43 @@ export default defineComponent({
     // 7. 当中间页码左边的页数大于2时，应该出现左边的 ...
     // 8. 当中间页码右边的页数小于totalPage - 3时，应该出现右边的 ...
     const pager = ref()
-
+    const disablePrev = computed(() =>
+      pager.value ? pager.value.pageIndex < 2 : true
+    )
+    const disableNext = computed(() =>
+      pager.value ? pager.value.pageIndex > pager.value.totalPage - 1 : true
+    )
+    onMounted(() => {
+      watch(
+        () => pager.value.pageIndex,
+        () => {
+          emit('update:modelValue', pager.value.pageIndex)
+        }
+      )
+      watch(
+        () => props.modelValue,
+        (newVal: number) => {
+          pager.value.pageIndex = newVal
+        }
+      )
+    })
     return () => {
       return (
         <div class={bem.b()}>
-          <k-button onClick={() => pager.value.prevPage()}>上一页</k-button>
+          <k-button
+            disabled={disablePrev.value}
+            onClick={() => pager.value.prevPage()}
+          >
+            上一页
+          </k-button>
           {/* pager部分 */}
           <KPager ref={pager} {...props}></KPager>
-          <k-button onClick={() => pager.value.nextPage()}>下一页</k-button>
+          <k-button
+            disabled={disableNext.value}
+            onClick={() => pager.value.nextPage()}
+          >
+            下一页
+          </k-button>
         </div>
       )
     }

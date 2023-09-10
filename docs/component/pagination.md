@@ -65,6 +65,9 @@
 
 ### Pagination Props
 
-| 名称  | 类型     | 说明             |
-| ----- | -------- | ---------------- |
-| total | `number` | total item count |
+| 名称       | 类型     | 说明             |
+| ---------- | -------- | ---------------- |
+| total      | `number` | 总条目数         |
+| page-size  | `number` | 每页显示条目个数 |
+| page-count | `number` | 总页数           |
+| v-model    | `number` | 当前页数         |
