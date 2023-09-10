@@ -32,7 +32,8 @@ module.exports = {
             { text: 'Button', link: '/component/button' },
             { text: 'tree', link: '/component/tree' },
             { text: 'Calendar', link: '/component/calendar' },
-            { text: 'Upload', link: '/component/upload' }
+            { text: 'Upload', link: '/component/upload' },
+            { text: 'Pagination', link: '/component/pagination' }
           ]
         }
       ]

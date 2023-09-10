@@ -332,6 +332,18 @@ const items = ref(listData)
       <k-col :span="2" style="background: green">333</k-col>
     </k-row>
   </div>
+  <div margin="0 auto">
+    <h6>total=1应该只有首页</h6>
+    <k-pagination :total="1"></k-pagination>
+    <h6>total=11应该有首页和尾页</h6>
+    <k-pagination :total="11"></k-pagination>
+    <h6>total=80 && pageIndex=4,应该有右更多</h6>
+    <h6>total=80 && pageIndex=5,应该有左更多</h6>
+    <k-pagination :total="80"></k-pagination>
+    <h6>total=90 && pageIndex=5,应该有左、右更多</h6>
+    <h6>total=90 && pageIndex=4,应该只有右更多</h6>
+    <k-pagination :total="90"></k-pagination>
+  </div>
 </template>
 
 <style lang="scss">

@@ -13,6 +13,7 @@ import Calendar from '@kalin-ui/components/calendar'
 import Virtual from '@kalin-ui/components/virtual-scroll-list'
 import Row from '@kalin-ui/components/row'
 import Col from '@kalin-ui/components/col'
+import Pagination from '@kalin-ui/components/pagination'
 
 const plugins = [
   Icon,
@@ -26,7 +27,8 @@ const plugins = [
   Calendar,
   Virtual,
   Row,
-  Col
+  Col,
+  Pagination
 ]
 
 const app = createApp(App)
